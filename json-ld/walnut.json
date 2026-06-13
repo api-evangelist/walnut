@@ -1,0 +1,49 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://www.walnut.io/",
+  "name": "Walnut",
+  "description": "Walnut is an AI-powered sales demo platform that enables go-to-market teams to create, personalize, and embed interactive product demonstrations.",
+  "url": "https://www.walnut.io/",
+  "logo": "https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg",
+  "sameAs": [
+    "https://www.linkedin.com/company/teamwalnut/",
+    "https://twitter.com/walnutinc",
+    "https://github.com/teamwalnut"
+  ],
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Walnut API",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "name": "Walnut Demos API",
+        "description": "REST API for creating and managing interactive sales demos, personalizing demo environments, tracking prospect engagement, and accessing analytics.",
+        "url": "https://help.walnut.io/hc/en-us",
+        "category": "Sales Demo Platform"
+      }
+    ]
+  },
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "url": "https://www.walnut.io/",
+    "contactType": "customer support"
+  },
+  "subjectOf": [
+    {
+      "@type": "WebPage",
+      "name": "Walnut Documentation",
+      "url": "https://help.walnut.io/hc/en-us"
+    },
+    {
+      "@type": "WebPage",
+      "name": "Walnut Pricing",
+      "url": "https://www.walnut.io/pricing"
+    },
+    {
+      "@type": "WebPage",
+      "name": "Walnut Status",
+      "url": "https://status.walnut.io/"
+    }
+  ]
+}
