@@ -1,0 +1,61 @@
+aid: walnut
+name: Walnut
+description: Walnut is an AI-powered sales demo platform that enables go-to-market teams to create, personalize, and embed interactive product demonstrations. The platform provides a REST API for creating personalized interactive product demos, managing demo environments, tracking engagement, and accessing analytics to drive faster sales cycles and higher conversions.
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+url: https://raw.githubusercontent.com/api-evangelist/walnut/refs/heads/main/apis.yml
+created: '2026-06-13'
+modified: '2026-06-13'
+specificationVersion: '0.19'
+tags:
+  - Sales Demo
+  - Interactive Demos
+  - Product Demos
+  - Sales Enablement
+  - Demo Analytics
+  - Go-to-Market
+  - AI-Powered
+apis:
+  - aid: walnut:walnut-api
+    name: Walnut Demos API
+    description: REST API for creating and managing interactive sales demos, personalizing demo environments, tracking prospect engagement, and accessing analytics. Available on the Scale (enterprise) plan with Demos API/MCP access.
+    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    humanURL: https://www.walnut.io/
+    baseURL: https://app.teamwalnut.com/
+    tags:
+      - Sales Demo
+      - Interactive Demos
+      - Analytics
+      - Personalization
+    properties:
+      - type: Documentation
+        url: https://help.walnut.io/hc/en-us
+      - type: Webhooks
+        url: https://help.walnut.io/hc/en-us/sections/22393747761555-Webhooks
+      - type: Pricing
+        url: https://www.walnut.io/pricing
+common:
+  - type: Website
+    url: https://www.walnut.io/
+  - type: Documentation
+    url: https://help.walnut.io/hc/en-us
+  - type: GitHubOrg
+    url: https://github.com/teamwalnut
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/teamwalnut/
+  - type: Blog
+    url: https://www.walnut.io/blog
+  - type: Pricing
+    url: https://www.walnut.io/pricing
+  - type: StatusPage
+    url: https://status.walnut.io/
+  - type: X
+    url: https://twitter.com/walnutinc
+  - type: Plans
+    url: plans/walnut-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/walnut-rate-limits.yml
+  - type: FinOps
+    url: finops/walnut-finops.yml
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

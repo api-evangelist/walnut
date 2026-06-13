@@ -1,0 +1,26 @@
+name: Walnut Rate Limits
+description: Walnut does not publicly document specific API rate limits. The Demos API is available exclusively on the Scale (enterprise) plan with custom pricing; rate limit details are negotiated as part of enterprise contracts. Webhooks must receive HTTP 200 or 201 responses within 30 seconds or Walnut may suspend delivery.
+url: https://help.walnut.io/hc/en-us
+created: '2026-06-13'
+modified: '2026-06-13'
+rateLimits:
+  - name: API Rate Limits
+    description: Specific rate limits for the Walnut Demos API are not publicly documented. As an enterprise-only feature (Scale plan), limits are defined per contract.
+    documented: false
+    notes: Contact Walnut sales for enterprise API rate limit details.
+
+  - name: Webhook Delivery Timeout
+    description: Webhook endpoints must respond with HTTP 200 or 201 within 30 seconds. If the endpoint does not respond in time, Walnut considers it non-functional and may suspend webhook delivery.
+    type: Webhook
+    timeout: 30 seconds
+    successCodes:
+      - 200
+      - 201
+    documented: true
+    url: https://help.walnut.io/hc/en-us/sections/22393747761555-Webhooks
+
+notes:
+  - The Walnut Demos API is only available on the Scale enterprise plan.
+  - Rate limit details should be requested directly from Walnut during enterprise contract negotiations.
+  - Webhook payload format is JSON (Content-Type application/json).
+  - Webhook verification uses a shared key provided during webhook setup.

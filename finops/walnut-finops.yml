@@ -1,0 +1,66 @@
+name: Walnut FinOps
+description: Financial operations guidance for Walnut API usage. Walnut's Demos API is an enterprise-only feature available on the Scale plan with custom pricing. Cost management focuses on seat counts, contract terms, and add-on feature selection.
+url: https://www.walnut.io/pricing
+created: '2026-06-13'
+modified: '2026-06-13'
+summary:
+  model: Seat-based SaaS subscription with annual contracts
+  apiAccess: Enterprise Scale plan only (custom pricing)
+  billingCycle: Annual
+  minimumCommitment: Approximately $9,000/year for a 5-person team on entry-level plan
+  pricingTransparency: Partial (Ignite and Accelerate published; Scale requires custom quote)
+
+plans:
+  - name: Ignite
+    monthlyRate: $575
+    annualCost: $6,900
+    seats: 3 Editor + 3 Presenter
+    apiAccess: false
+    costPerSeat: ~$96/month
+
+  - name: Accelerate
+    monthlyRate: $1,550
+    annualCost: $18,600
+    seats: 6 Editor + 6 Presenter
+    apiAccess: false
+    costPerSeat: ~$129/month
+
+  - name: Scale
+    monthlyRate: Custom
+    annualCost: Custom
+    seats: Custom
+    apiAccess: true
+    notes: API access (Demos API/MCP) is exclusive to this tier. Contact sales for pricing.
+
+costOptimization:
+  - tip: Demos API access requires the Scale plan; evaluate ROI before upgrading from Accelerate.
+  - tip: Multi-year contracts typically receive discounts; negotiate before signing annual.
+  - tip: Seat count is the primary cost driver; audit active users quarterly to avoid paying for unused seats.
+  - tip: Add-ons (offline demos, white labeling, video overlays, SSO) are available separately; bundle into contract for better rates.
+  - tip: The Ignite plan covers core demo analytics; only upgrade to Accelerate if advanced AI insights or Salesforce integration is needed.
+
+integrations:
+  - name: Salesforce
+    type: CRM
+    plan: Accelerate and Scale
+    notes: Advanced Salesforce integration on Accelerate+; basic CRM integration on Ignite.
+  - name: HubSpot
+    type: CRM/Marketing
+    plan: All plans
+  - name: Marketo
+    type: Marketing Automation
+    plan: All plans
+  - name: Zapier
+    type: Automation
+    plan: Available (tier details not specified)
+  - name: Webhooks
+    type: Event notifications
+    plan: Available (tier details not specified)
+    notes: Demo view events sent as JSON to configured endpoints.
+
+contacts:
+  - type: Sales
+    url: https://www.walnut.io/
+    notes: Schedule a demo to get Scale plan pricing and API access details.
+  - type: Support
+    email: support@walnut.io

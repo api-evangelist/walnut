@@ -1,0 +1,71 @@
+name: Walnut Plans and Pricing
+description: Walnut offers three main pricing tiers for its AI-powered sales demo platform. All plans are billed annually. The Demos API and MCP access are exclusive to the Scale enterprise plan.
+url: https://www.walnut.io/pricing
+created: '2026-06-13'
+modified: '2026-06-13'
+plans:
+  - name: Ignite
+    description: Best for teams starting their guided demo journey. Includes 3 Editor seats and 3 Presenter seats with core demo creation and analytics features.
+    price: $575/month
+    billing: Annual
+    seats: 3 Editor + 3 Presenter
+    features:
+      - Unlimited demos
+      - AI-powered demo creation
+      - Choose your own adventure Playlist
+      - Demo analytics
+      - HubSpot integration
+      - Marketo integration
+      - Pardot integration
+      - CRM integrations
+      - Scaled success program
+      - Campaign-specific onboarding
+    apiAccess: false
+
+  - name: Accelerate
+    description: Best for teams creating tailored demos with advanced analytics. Includes 6 Editor seats and 6 Presenter seats with advanced personalization and AI insights.
+    price: $1,550/month
+    billing: Annual
+    seats: 6 Editor + 6 Presenter
+    features:
+      - All Ignite features
+      - Sandbox demos
+      - Prospect personalization
+      - Video overlays
+      - Sales & Customer Hub Playlists
+      - Advanced analytics
+      - AI-powered insights (InsightsAI)
+      - Walnut Uncover
+      - Advanced Salesforce integration
+      - SSO & SCIM
+      - White-labeled branding
+      - Dedicated CSM
+      - 10 strategic onboarding hours
+    apiAccess: false
+
+  - name: Scale
+    description: Enterprise solution for global team standardization. Custom seat limits with full platform access including Demos API/MCP, digital sales rooms, and advanced translations.
+    price: Custom
+    billing: Annual (custom contract)
+    seats: Custom
+    features:
+      - All Accelerate features
+      - Digital Sales Rooms
+      - Advanced translations (243 languages)
+      - Demos API/MCP access
+      - Dedicated Strategic CSM
+      - White-glove services
+      - Quarterly business reviews
+      - Custom seat limits
+    apiAccess: true
+    apiNote: Demos API and MCP (Model Context Protocol) access are exclusively available on the Scale plan.
+
+addOns:
+  - Offline demos
+  - White labeling
+  - Advanced translations
+  - Video overlays
+  - SSO & SCIM
+  - Digital Sales Rooms
+  - Sales/Customer Hub Playlists
+  - Sandbox demos
