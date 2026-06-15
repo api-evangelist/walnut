@@ -1,6 +1,6 @@
 {
   "url": "https://www.walnut.io/blog",
-  "fetched": "2026-06-13",
+  "fetched": "2026-06-14T20:42:17Z",
   "posts": [
     {
       "title": "The 9 Biggest Trends in B2B Demo Platforms",
@@ -62,5 +62,16 @@
       "url": "https://www.walnut.io/blog/product-demos/demo-intent-signals-predict-deal-close/",
       "category": "product-demos"
     }
-  ]
+  ],
+  "repo": "walnut",
+  "feeds": [
+    {
+      "source": "https://www.linkedin.com/company/teamwalnut/",
+      "feed_url": "https://www.linkedin.com/company/teamwalnut/",
+      "title": "",
+      "saved": 0,
+      "method": "none"
+    }
+  ],
+  "post_count": 0
 }
