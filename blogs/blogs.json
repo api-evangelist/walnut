@@ -1,77 +1,18 @@
 {
-  "url": "https://www.walnut.io/blog",
-  "fetched": "2026-06-14T20:42:17Z",
-  "posts": [
-    {
-      "title": "The 9 Biggest Trends in B2B Demo Platforms",
-      "url": "https://www.walnut.io/blog/product-demos/b2b-demo-platform-trends-2026/",
-      "category": "product-demos"
-    },
-    {
-      "title": "Your Buyer Met an AI Demo Agent Before Your Rep",
-      "url": "https://www.walnut.io/blog/ai/ai-demo-agent-buyer-research-2026/",
-      "category": "ai"
-    },
-    {
-      "title": "Why Interactive Demos Are the B2B Trust Asset That Still Works",
-      "url": "https://www.walnut.io/blog/product-demos/interactive-demos-b2b-trust-asset-2026/",
-      "category": "product-demos"
-    },
-    {
-      "title": "Agent vs. Agent: What Wins When AI Buyer Agents Are Evaluating Your Product",
-      "url": "https://www.walnut.io/blog/ai/ai-buyer-agents-evaluate-b2b-product/",
-      "category": "ai"
-    },
-    {
-      "title": "The Hidden Cost of Letting Your Reps Vibe-Code Sales Demos in 2026",
-      "url": "https://www.walnut.io/blog/product-demos/hidden-cost-vibe-coded-sales-demos/",
-      "category": "product-demos"
-    },
-    {
-      "title": "How to Write AI Demo Prompts That Work: Lessons From 1,000+ Real Sales Conversations",
-      "url": "https://www.walnut.io/blog/ai/ai-demo-prompts-that-work/",
-      "category": "ai"
-    },
-    {
-      "title": "Clickable Demo: How to Build One Buyers Actually Finish",
-      "url": "https://www.walnut.io/blog/product-demos/clickable-demo/",
-      "category": "product-demos"
-    },
-    {
-      "title": "Your CRM Forecast Lies. Your Demos Don't",
-      "url": "https://www.walnut.io/blog/sales-tips/demo-analytics-predict-deal-close/",
-      "category": "sales-tips"
-    },
-    {
-      "title": "Why Interactive Demos in Email Convert 3x Better Than Screenshots",
-      "url": "https://www.walnut.io/blog/sales-tips/why-interactive-demos-in-email-convert-3x-better-thanscreenshots/",
-      "category": "sales-tips"
-    },
-    {
-      "title": "The AI Buyer Paradox: Demo First, Rep Last",
-      "url": "https://www.walnut.io/blog/ai/ai-buyer-paradox-demo-agent-first-motion/",
-      "category": "ai"
-    },
-    {
-      "title": "The Pre-Meeting Funnel: How Buyers Decide Before You Ever Get on the Call",
-      "url": "https://www.walnut.io/blog/sales-tips/the-pre-meeting-funnel-buyer-research-before-first-call/",
-      "category": "sales-tips"
-    },
-    {
-      "title": "Demo Intent Signals: 4 Buyer Behaviors That Predict Deal Close (And Why Your CRM Misses Them)",
-      "url": "https://www.walnut.io/blog/product-demos/demo-intent-signals-predict-deal-close/",
-      "category": "product-demos"
-    }
-  ],
   "repo": "walnut",
   "feeds": [
     {
-      "source": "https://www.linkedin.com/company/teamwalnut/",
-      "feed_url": "https://www.linkedin.com/company/teamwalnut/",
+      "source": "https://www.walnut.io/blog/feed/",
+      "feed_url": "https://www.walnut.io/blog/feed/",
       "title": "",
-      "saved": 0,
-      "method": "none"
+      "saved": 1,
+      "method": "feed"
+    },
+    {
+      "source": "https://www.linkedin.com/company/teamwalnut/",
+      "error": "HTTPError"
     }
   ],
-  "post_count": 0
+  "fetched": "2026-06-27T12:03:07Z",
+  "post_count": 1
 }
