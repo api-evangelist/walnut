@@ -1,7 +1,19 @@
 aid: walnut
 name: Walnut
 description: Walnut is an AI-powered sales demo platform that enables go-to-market teams to create, personalize, and embed interactive product demonstrations. The platform provides a REST API for creating personalized interactive product demos, managing demo environments, tracking engagement, and accessing analytics to drive faster sales cycles and higher conversions.
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: paid
+  onboarding: unknown
+  trial: false
+  try_now: false
+  public: false
+  label: Paid
+  confidence: medium
+  source:
+  - plans
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/walnut.png
 url: https://raw.githubusercontent.com/api-evangelist/walnut/refs/heads/main/apis.yml
 created: '2026-06-13'
 modified: '2026-06-13'
