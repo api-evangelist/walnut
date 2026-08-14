@@ -1,22 +1,24 @@
 aid: walnut
 name: Walnut
-description: Walnut is an AI-powered sales demo platform that enables go-to-market teams to create, personalize, and embed interactive product demonstrations. The platform provides a REST API for creating personalized interactive product demos, managing demo environments, tracking engagement, and accessing analytics to drive faster sales cycles and higher conversions.
+description: Walnut is an AI-powered interactive demo platform for B2B go-to-market teams, used to capture a live product into an editable demo, personalize it at scale, embed it, and measure how buyers engage with it. Its developer surface is the Walnut Customer Data API — a read-only REST analytics API at customer-api.teamwalnut.com that returns demo-session records with 29 documented fields, plus filtering, offset pagination, field selection and multi-dimensional aggregation. Walnut also ships a first-party Model Context Protocol server that wraps the same three operations for AI assistants, and two signed webhook events for demo and playlist session completion. API and MCP access are exclusive to the enterprise Scale plan, and keys are issued by an account representative rather than self-service.
 accessModel:
   pricing: paid
-  onboarding: unknown
+  onboarding: sales-gated
   trial: false
   try_now: false
   public: false
   label: Paid
-  confidence: medium
+  confidence: high
   source:
   - plans
-  generated: '2026-07-22'
-  method: derived
+  - https://www.walnut.io/pricing
+  - https://help.walnut.io/help/api/customer-data-api
+  generated: '2026-08-13'
+  method: searched
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/walnut.png
 url: https://raw.githubusercontent.com/api-evangelist/walnut/refs/heads/main/apis.yml
 created: '2026-06-13'
-modified: '2026-06-13'
+modified: '2026-08-13'
 specificationVersion: '0.19'
 tags:
   - Sales Demo
@@ -26,13 +28,16 @@ tags:
   - Demo Analytics
   - Go-to-Market
   - AI-Powered
+  - Webhooks
+  - MCP
+  - Analytics
 apis:
   - aid: walnut:walnut-api
-    name: Walnut Demos API
-    description: REST API for creating and managing interactive sales demos, personalizing demo environments, tracking prospect engagement, and accessing analytics. Available on the Scale (enterprise) plan with Demos API/MCP access.
+    name: Walnut Customer Data API
+    description: Read-only REST API for Walnut demo analytics. Two data endpoints plus a health check — GET /demo-sessions returns individual demo-session records across 29 documented fields with filtering, offset pagination, comma-separated field selection and multi-dimensional group_by aggregation, and GET /demo-sessions/summary returns a pre-built snapshot of totals, averages, top demos and top countries. Authenticated with a static x-api-key header issued by a Walnut account representative. Available on the Scale (enterprise) plan only. Walnut publishes no OpenAPI document for it.
     image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    humanURL: https://www.walnut.io/
-    baseURL: https://app.teamwalnut.com/
+    humanURL: https://help.walnut.io/help/api
+    baseURL: https://customer-api.teamwalnut.com
     tags:
       - Sales Demo
       - Interactive Demos
@@ -40,19 +45,53 @@ apis:
       - Personalization
     properties:
       - type: Documentation
-        url: https://help.walnut.io/hc/en-us
+        url: https://help.walnut.io/help/api
+      - type: APIReference
+        url: https://help.walnut.io/help/api/customer-data-api
+      - type: GettingStarted
+        url: https://help.walnut.io/help/api/quick-start
+      - type: CodeSamples
+        url: https://help.walnut.io/help/api/code-samples
+      - type: Authentication
+        url: authentication/walnut-authentication.yml
+      - type: Conventions
+        url: conventions/walnut-conventions.yml
+      - type: ErrorCatalog
+        url: errors/walnut-problem-types.yml
+      - type: DataModel
+        url: data-model/walnut-data-model.yml
+      - type: RateLimits
+        url: rate-limits/walnut-rate-limits.yml
+      - type: Lifecycle
+        url: lifecycle/walnut-lifecycle.yml
+      - type: Sandbox
+        url: sandbox/walnut-sandbox.yml
+      - type: MCPServer
+        url: mcp/walnut-mcp.yml
+      - type: ToolCrosswalk
+        url: mcp/walnut-tool-crosswalk.yml
       - type: Webhooks
-        url: https://help.walnut.io/hc/en-us/sections/22393747761555-Webhooks
+        url: asyncapi/walnut-webhooks.yml
+      - type: LLMsTxt
+        url: llms/walnut-docs-llms.txt
       - type: Pricing
         url: https://www.walnut.io/pricing
 common:
-  - type: DomainSecurity
-    url: security/walnut-domain-security.yml
   - type: Website
     url: https://www.walnut.io/
+  - type: DeveloperPortal
+    url: https://help.walnut.io/help/api
   - type: Documentation
-    url: https://help.walnut.io/hc/en-us
+    url: https://help.walnut.io/
+  - type: APIReference
+    url: https://help.walnut.io/help/api/customer-data-api
+  - type: GettingStarted
+    url: https://help.walnut.io/help/api/quick-start
+  - type: Support
+    url: https://help.walnut.io/
   - type: GitHubOrg
+    url: https://github.com/teamwalnut
+  - type: GitHubOrganization
     url: https://github.com/teamwalnut
   - type: LinkedIn
     url: https://www.linkedin.com/company/teamwalnut/
@@ -60,6 +99,14 @@ common:
     url: https://www.walnut.io/blog
   - type: Pricing
     url: https://www.walnut.io/pricing
+  - type: SignUp
+    url: https://www.walnut.io/get-a-demo/
+  - type: Login
+    url: https://app.teamwalnut.com/login
+  - type: TermsOfService
+    url: https://www.walnut.io/msa/
+  - type: PrivacyPolicy
+    url: https://www.walnut.io/privacy/
   - type: StatusPage
     url: https://status.walnut.io/
   - type: X
@@ -70,6 +117,45 @@ common:
     url: rate-limits/walnut-rate-limits.yml
   - type: FinOps
     url: finops/walnut-finops.yml
+  - type: DomainSecurity
+    url: security/walnut-domain-security.yml
+  - type: TrustCenter
+    url: security/walnut-trust-center.yml
+  - type: Compliance
+    url: security/walnut-trust-center.yml
+  - type: Conformance
+    url: conformance/walnut-conformance.yml
+  - type: Authentication
+    url: authentication/walnut-authentication.yml
+  - type: Conventions
+    url: conventions/walnut-conventions.yml
+  - type: ErrorCatalog
+    url: errors/walnut-problem-types.yml
+  - type: DataModel
+    url: data-model/walnut-data-model.yml
+  - type: Lifecycle
+    url: lifecycle/walnut-lifecycle.yml
+  - type: ChangeLog
+    url: changelog/walnut-changelog.yml
+  - type: Components
+    url: components/walnut-components.yml
+  - type: Sandbox
+    url: sandbox/walnut-sandbox.yml
+  - type: Packages
+    url: packages/walnut-packages.yml
+  - type: MCPServer
+    url: mcp/walnut-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/walnut-tool-crosswalk.yml
+  - type: Webhooks
+    url: asyncapi/walnut-webhooks.yml
+  - type: LLMsTxt
+    url: llms/walnut-llms.txt
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
+x-enrichment:
+  date: '2026-08-13'
+  status: enriched
+  artifacts_added: 17
+  pass: local-v1
