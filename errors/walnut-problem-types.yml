@@ -1,0 +1,113 @@
+name: Walnut Error Catalog
+description: >-
+  Error surface of the Walnut Customer Data API. Walnut publishes a five-row status-code table
+  with causes, and a single-key JSON error envelope. It is not RFC 9457 problem+json: there is no
+  type URI, no title/detail split, no instance, and no machine-readable error code — a consumer
+  can only branch on the HTTP status. A second envelope shape appears at the AWS API Gateway edge
+  and is recorded here because it is what an unauthenticated or mistyped request actually gets.
+generated: '2026-08-13'
+method: searched
+source: https://help.walnut.io/help/api/customer-data-api
+docs:
+  - https://help.walnut.io/help/api/customer-data-api
+  - https://help.walnut.io/help/api/quick-start
+
+api: Walnut Customer Data API
+base_url: https://customer-api.teamwalnut.com
+
+format: custom-json
+rfc9457: false
+problem_json_media_type: false
+media_type: application/json
+machine_readable_code: false
+
+envelopes:
+  - name: application
+    shape: '{ "error": "<message>" }'
+    fields:
+      - name: error
+        type: string
+        required: true
+        description: Human-readable message. No code, type URI, field pointer, or remediation link.
+    source: https://help.walnut.io/help/api/customer-data-api
+  - name: gateway
+    shape: '{ "message": "<message>" }'
+    fields:
+      - name: message
+        type: string
+        required: true
+    note: >-
+      Observed live 2026-08-13, not documented by Walnut. AWS API Gateway answers unauthenticated
+      and unmatched requests with this shape before the application is reached, so an integration
+      must tolerate both keys.
+    method: probed
+
+problem_types:
+  - status: 400
+    title: Bad Request
+    documented: true
+    causes:
+      - Invalid date format (dates must be YYYY-MM-DD).
+      - Unknown field name in the fields parameter.
+      - Malformed parameter value.
+    example_body: '{ "error": "Invalid fields requested" }'
+    remediation: >-
+      Validate start_date/end_date against YYYY-MM-DD and check every name in `fields` against
+      the 29 documented fields before sending.
+    retryable: false
+  - status: 401
+    title: Unauthorized
+    documented: true
+    causes:
+      - Missing API key.
+      - Invalid API key.
+    observed_body: '{ "message": "Unauthorized" }'
+    observed_note: >-
+      Verified live 2026-08-13 — GET https://customer-api.teamwalnut.com/demo-sessions with no
+      credentials returned HTTP 401 with the gateway envelope.
+    remediation: >-
+      Send the key in the x-api-key header. Walnut's quick-start calls out the common mistake
+      explicitly: use x-api-key, not Authorization.
+    retryable: false
+  - status: 403
+    title: Forbidden
+    documented: true
+    documented_in: quick-start
+    causes:
+      - The API key is incorrect or is no longer active.
+    remediation: >-
+      Confirm the key with the Walnut account team. Allow up to 5 minutes after any key change,
+      because authorization decisions are cached.
+    retryable: false
+    note: >-
+      Unmatched paths on the same host also return 403 with {"message":"Missing Authentication
+      Token"} — that is AWS API Gateway's not-found response, not a credential problem. Verified
+      live 2026-08-13 on /openapi.json, /docs and /.well-known/*.
+  - status: 429
+    title: Too Many Requests
+    documented: true
+    causes:
+      - Sustained rate above 50 requests/second per API key, or burst above 100 requests/second.
+    remediation: Retry with exponential backoff, as instructed by Walnut.
+    retryable: true
+    retry_after_header: false
+    retry_after_note: No Retry-After or RateLimit-* header is documented on the 429.
+  - status: 500
+    title: Internal Server Error
+    documented: true
+    causes:
+      - Unexpected server issue.
+    remediation: >-
+      Retry; if persistent, contact the Walnut account team with the request URL, timestamp and
+      HTTP status code. Walnut states error responses never expose internal details.
+    retryable: true
+
+error_count: 5
+
+gaps:
+  - No application/problem+json media type and no RFC 9457 members.
+  - No stable machine-readable error code or type URI — the only branchable signal is the HTTP status.
+  - No field-level validation pointers on 400; the message names the problem class, not the offending value.
+  - No Retry-After on 429 and no rate-limit headers, so backoff timing has to be guessed.
+  - No request/correlation identifier in any error body, which is why support asks for URL + timestamp.
+  - No documented 404. Unknown paths surface AWS API Gateway's 403 instead.

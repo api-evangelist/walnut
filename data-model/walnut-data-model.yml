@@ -1,0 +1,207 @@
+name: Walnut Data Model
+description: >-
+  Entity graph of the data Walnut exposes to integrators, assembled from the two object
+  references the provider publishes: the 29-field demo session record returned by the Customer
+  Data API, and the demo/playlist session objects delivered by webhook. The API itself returns a
+  single flat entity — there are no nested objects, no $ref expansion and no relation endpoints —
+  so the relationships below are ID references a consumer must resolve elsewhere, mostly inside
+  the Walnut application, because no demo, template or playlist endpoint exists yet.
+generated: '2026-08-13'
+method: searched
+source: https://help.walnut.io/help/api/customer-data-api
+docs:
+  - https://help.walnut.io/help/api/customer-data-api
+  - https://help.walnut.io/help/api/webhooks
+
+id_format: UUID (RFC 4122)
+id_prefixes: none
+id_note: >-
+  Every identifier across the REST API and both webhook payloads is a bare UUID. There is no
+  prefixing convention (no dm_, sess_, tpl_), so an ID carries no type information and a consumer
+  cannot tell a demo_id from a session_id by inspection.
+
+entities:
+  - name: DemoSession
+    primary: true
+    exposed_via:
+      - GET /demo-sessions
+      - webhook demo_session_finished
+    identifier: id (REST) / session_id (webhook)
+    description: >-
+      One viewing of one interactive demo. The only entity the API returns in full.
+    field_count: 29
+    field_groups:
+      identifiers: [id, demo_id, company_id]
+      classification: [viewer_type, user_type]
+      timing: [started_at, finished_at]
+      state: [is_bounced, is_completed, is_embed, is_offline]
+      engagement: [interaction_count, screen_views_count, annotation_views_count, guide_views_count]
+      geography: [geo_country_code, geo_country_name, geo_city]
+      context: [origin_url, demo_owner_name, demo_name]
+      lead_form: [lead_form_exists, lead_form_opened, lead_form_opened_at, lead_form_skipped, lead_form_skipped_at, lead_form_submitted, lead_form_submitted_at]
+      gates: [email_gate_exists, access_gate_exists]
+      viewer_identity: [user_email, user_anonymous_id]
+    enumerations:
+      viewer_type: [prospect, owner, colleague_member, colleague_non_member]
+      user_type: [external, internal]
+    pii: true
+    pii_fields: [user_email, geo_city, geo_country_name, origin_url, demo_owner_name]
+  - name: Demo
+    primary: false
+    exposed_via: []
+    identifier: demo_id
+    description: >-
+      An interactive product demo. Referenced by every session, but NOT retrievable — Walnut
+      lists "demo metadata" among the data types not yet exposed. A consumer only ever sees
+      demo_id and the denormalized demo_name carried on the session.
+    denormalized_onto_session: [demo_name, demo_owner_name]
+    webhook_fields: [demo.id, demo.name, demo.template_id, demo.template_name, demo.url]
+  - name: Template
+    primary: false
+    exposed_via:
+      - webhook demo_session_finished (demo.template_id, demo.template_name)
+    identifier: template_id
+    description: >-
+      The reusable source a demo is created from. Appears only in the webhook payload; the REST
+      session object has no template reference at all.
+  - name: PlaylistSession
+    primary: false
+    exposed_via:
+      - webhook playlist_session_finished
+    identifier: session_id
+    description: >-
+      One viewing of a playlist — a bundled experience that can contain demos, videos and PDFs.
+      Walnut lists "playlist sessions" among the data types the REST API does not yet expose, so
+      this entity is reachable by webhook only.
+    pii: true
+    pii_fields: [user.email, user.domain, user.ip, user.user_agent]
+  - name: Playlist
+    primary: false
+    exposed_via:
+      - webhook playlist_session_finished (playlist.id, playlist.name, playlist.description, playlist.url)
+    identifier: playlist.id
+    description: A curated, ordered collection of assets shared as one link.
+  - name: PlaylistItem
+    primary: false
+    exposed_via:
+      - webhook playlist_session_finished (items[])
+    identifier: items[].id
+    description: >-
+      One asset inside a playlist — video, PDF, demo or other. Carries its own position,
+      duration, view count, selection and visit state, and an optional demo_id.
+    types: [video, pdf, demo]
+  - name: Company
+    primary: false
+    exposed_via:
+      - GET /demo-sessions (company_id)
+    identifier: company_id
+    description: >-
+      The Walnut account. Constant across every session returned by a given API key — the key is
+      account-scoped — so it functions as a tenant marker rather than a navigable entity.
+  - name: Viewer
+    primary: false
+    exposed_via:
+      - GET /demo-sessions (user_email, user_anonymous_id, viewer_type, user_type)
+      - webhook (user.email, user.domain, user.identification_method, user.ip, user.type)
+    identifier: user_email or user_anonymous_id
+    description: >-
+      The person who watched. Identified only when a lead form, email gate or URL parameter
+      supplied an address; otherwise represented by user_anonymous_id.
+    identification_methods: [email_gate, lead_form, url_parameters, IP-to-company enrichment (Walnut Uncover)]
+  - name: LeadForm
+    primary: false
+    exposed_via:
+      - GET /demo-sessions (seven lead_form_* fields)
+    identifier: none
+    description: >-
+      Not a resource — a set of booleans and timestamps flattened onto the session recording
+      whether a form existed, was opened, skipped or submitted, and when.
+
+relationships:
+  - from: DemoSession
+    to: Demo
+    type: belongs_to
+    via: demo_id
+    resolvable_via_api: false
+    note: No demo endpoint exists; demo_name is denormalized onto the session instead.
+  - from: DemoSession
+    to: Company
+    type: belongs_to
+    via: company_id
+    resolvable_via_api: false
+  - from: DemoSession
+    to: Viewer
+    type: belongs_to
+    via: user_email or user_anonymous_id
+    resolvable_via_api: false
+    note: Only populated when the viewer was identified.
+  - from: Demo
+    to: Template
+    type: belongs_to
+    via: demo.template_id
+    resolvable_via_api: false
+    note: Visible in webhook payloads only.
+  - from: Demo
+    to: DemoSession
+    type: has_many
+    via: demo_id
+    resolvable_via_api: true
+    note: GET /demo-sessions?demo_id=<uuid> returns every session for one demo.
+  - from: Playlist
+    to: PlaylistItem
+    type: has_many
+    via: items[]
+    resolvable_via_api: false
+    note: Embedded array inside the playlist_session_finished webhook payload.
+  - from: PlaylistItem
+    to: Demo
+    type: belongs_to
+    via: items[].demo_id
+    resolvable_via_api: false
+    optional: true
+  - from: PlaylistSession
+    to: Playlist
+    type: belongs_to
+    via: playlist.id
+    resolvable_via_api: false
+  - from: PlaylistSession
+    to: Viewer
+    type: belongs_to
+    via: user.email
+    resolvable_via_api: false
+
+aggregations:
+  endpoint: GET /demo-sessions?group_by=<dims>
+  dimensions: [date, user_type, viewer_type, demo_id, is_embed, demo_name]
+  summary_endpoint: GET /demo-sessions/summary
+  summary_blocks: [period, totals, averages, by_user_type, by_viewer_type, by_embed, top_demos, top_countries]
+
+derived_metrics:
+  - name: Bounce rate
+    formula: is_bounced=true count / total sessions
+  - name: Completion rate
+    formula: is_completed=true count / total sessions
+  - name: Lead form conversion
+    formula: lead_form_submitted / lead_form_opened
+  - name: Engagement depth
+    formula: interaction_count and screen_views_count per session
+  - name: Identification coverage
+    formula: sessions with email_gate_exists=true or lead_form_exists=true / total sessions
+
+derived_metrics_source: https://help.walnut.io/help/api/customer-data-api
+
+modeling_gaps:
+  - >-
+    Single-entity API. Only DemoSession is retrievable; Demo, Template, Playlist and Company are
+    referenced by ID but have no endpoint, so a consumer cannot resolve a demo_id to anything but
+    the name already denormalized onto the session.
+  - >-
+    The REST and webhook models disagree. REST is flat snake_case (demo_id, user_email); webhooks
+    are nested (demo.id, user.email). Fields present in one are absent in the other — REST has
+    company_id, geography and lead-form state that webhooks lack; webhooks have template_id,
+    fab_clicks, guides_completion_rate and screen_completion_rate that REST lacks.
+  - >-
+    Duration is asymmetric. The REST session object exposes started_at and finished_at but no
+    duration field, while the summary endpoint reports averages.duration_seconds and the webhook
+    reports session_duration directly.
+  - No JSON Schema, OpenAPI components, or any machine-readable definition of these entities.

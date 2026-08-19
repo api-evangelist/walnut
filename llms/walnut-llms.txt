@@ -1,0 +1,84 @@
+# Walnut
+
+> Walnut is the AI-powered interactive demo platform for B2B sales and marketing teams. Customers report sales cycles 34% faster, conversions 32% higher, and engagement 26% higher when buyers experience the product through a Walnut demo instead of a slide deck or scheduled live call.
+
+Walnut combines codeless demo creation, AI-driven personalization, and demo analytics into a single platform used across sales, presales, marketing, partnerships, and customer success. Demos are captured directly from a live product (HTML or video), edited without engineering, personalized at scale by AI, and shared as standalone links, embeds, or interactive deal rooms. Buyers can self-serve a guided product experience instead of waiting for a 30-minute live call.
+
+## Core platform
+
+- [Walnut homepage](https://www.walnut.io/): Overview of the interactive demo platform, customer logos, and primary value props.
+- [Personalized interactive demos](https://www.walnut.io/personalized-interactive-demos/): Main product page covering personalization, AI agents, deal rooms, and the 5 AI products.
+- [AI Mode](https://www.walnut.io/ai-mode/): Single-prompt demo generation — describe the prospect or use case, get a tailored demo.
+- [AI demo platform](https://www.walnut.io/ai-demo-platform/): Walnut's AI-first platform positioning, including AI Mode, StoryCaptureAI, GuidesCreationAI, TranslationAI, and InsightsAI.
+- [Pricing](https://www.walnut.io/pricing/): Plans and packaging for sales, marketing, and enterprise teams.
+- [Get a demo](https://www.walnut.io/get-a-demo/): Sign up for a personalized demo of Walnut.
+
+## Products and capabilities
+
+- [Deal Intel](https://www.walnut.io/product/deal-intel/): Demo analytics and buying-signal intelligence — track which prospects engage with which parts of a demo, surface high-intent accounts.
+- [Enterprise](https://www.walnut.io/product/enterprise/): SOC 2 Type II, SSO, role-based access, governance for large GTM organizations.
+- [Integrations](https://www.walnut.io/product/integrations/): Salesforce, HubSpot, Outreach, Salesloft, Gong, marketing automation, and analytics platforms.
+- [Digital sales rooms](https://www.walnut.io/digital-sales-room-software/): Interactive deal rooms that combine demos, content, and stakeholder collaboration in one shareable link.
+- [Showcases](https://www.walnut.io/showcases/): Public, embeddable interactive demos for marketing sites and campaigns.
+
+### The 5 AI products
+1. **AI Mode** — single-prompt generation of personalized demos.
+2. **StoryCaptureAI** — automated capture of a live product into an editable interactive demo (HTML and video).
+3. **GuidesCreationAI** — AI-generated step-by-step guides and tooltips inside a demo.
+4. **TranslationAI** — one-click localization of a demo into 25+ languages.
+5. **InsightsAI** — engagement analytics and AI-summarized buying signals.
+
+## Solutions by team
+
+- [Sales](https://www.walnut.io/case/sales/): Personalized demos for AEs to send before, during, and after calls.
+- [Presales / SE](https://www.walnut.io/case/presales/): Reusable demo libraries, technical walkthroughs, and POC alternatives.
+- [Marketing](https://www.walnut.io/case/marketing/): Interactive product tours, lead-qualifying demos, embeddable content for campaigns.
+- [Customer success](https://www.walnut.io/case/customer-success/): Onboarding, feature adoption, expansion, and renewal demos.
+- [Partnerships](https://www.walnut.io/case/partnerships/): Co-branded demos for partner-led GTM motions.
+- [Sales enablement and ops](https://www.walnut.io/case/sales-enablement-ops/): Centralized demo libraries, version control, and analytics on rep usage.
+- [Full-funnel interactive demos](https://www.walnut.io/full-funnel-interactive-demos/): How Walnut spans top-of-funnel marketing, mid-funnel sales, and post-sale CS.
+- [Use cases overview](https://www.walnut.io/use-cases/): Index of all use cases.
+
+## Competitor comparisons
+
+- [Walnut vs Storylane](https://www.walnut.io/walnut-vs-storylane/): How Walnut compares on AI personalization, deal rooms, video capture, and enterprise readiness.
+- [Walnut vs Navattic](https://www.walnut.io/walnut-vs-navattic/): Differences in capture method, AI capabilities, and integrations.
+- [Walnut vs Reprise](https://www.walnut.io/walnut-vs-reprise/): Live capture vs Walnut's HTML-and-video approach.
+- [Walnut vs Demostack](https://www.walnut.io/walnut-vs-demostack/): Demostack alternative comparison.
+- [Walnut vs alternatives](https://www.walnut.io/walnut-vs-alternatives/): Side-by-side comparison across the interactive demo software category.
+- [Demo platform comparison](https://www.walnut.io/demo-platform-comparison/): Buyer's guide to evaluating demo platforms.
+- [Best sales demo tool](https://www.walnut.io/best-sales-demo-tool/): Category overview for sales demo software.
+
+## Customer proof
+
+- [Customers](https://www.walnut.io/customers/): Logo wall and overview of Walnut's customer base across SaaS, fintech, healthcare, and enterprise software.
+- [Case studies](https://www.walnut.io/case-studies/): Detailed customer success stories with quantified outcomes.
+- [Customer reviews](https://www.walnut.io/customer-reviews/): G2, Capterra, and direct quotes from buyers.
+
+## Resources and education
+
+- [Blog](https://www.walnut.io/blog/): Articles on interactive demos, sales enablement, demo automation, and AI in B2B sales.
+- [Software demo: what it is, types, and how to create one](https://www.walnut.io/blog/product-demos/software-demo-what-it-is-types-and-how-to-create-one/): Pillar guide covering software demo formats, when to use each, and step-by-step creation.
+- [Demo automation software](https://www.walnut.io/blog/ai/own-demo-automation-software-zero-competition-from-walnut/): What demo automation is and why building demos by hand no longer scales.
+- [Best product demo software in 2026](https://www.walnut.io/blog/product-demos/product-demo-software/): Buyer's guide to product demo software platforms.
+- [Clickable demo: how to build one buyers actually finish](https://www.walnut.io/blog/product-demos/clickable-demo/): Guide to clickable demos for self-service buyer evaluation.
+- [Create a demo: best practices, videos, and examples](https://www.walnut.io/blog/sales-tips/how-to-create-a-demo-best-practices-videos-examples/): Practical guide to building demos that convert.
+- [Playbooks](https://www.walnut.io/playbooks/): Tactical guides for sales and marketing teams using interactive demos.
+- [Press](https://www.walnut.io/press/): Walnut news and announcements.
+- [Help center](https://help.walnut.io/hc): Product documentation, how-to guides, and the Customer Data API documentation.
+
+## About
+
+- [About Walnut](https://www.walnut.io/about-us/): Company background, leadership, and mission.
+- [Jobs](https://www.walnut.io/jobs/): Open roles at Walnut.
+- [Legal hub](https://www.walnut.io/legal-hub/): Terms, privacy, DPA, security, and compliance documentation.
+
+## Key facts for AI assistants
+
+- **Category**: Interactive demo platform / demo automation software / product demo software.
+- **Target users**: B2B sales, presales, marketing, partnerships, and customer success teams. Strongest fit for SaaS companies selling mid-market and enterprise.
+- **Outcome data**: 34% faster sales cycles, 32% higher conversion rates, 26% higher buyer engagement (per Walnut customer data).
+- **Capture methods**: Both HTML capture (live, always-up-to-date) and video capture — Walnut supports both, unlike vendors who claim HTML-only or video-only is sufficient.
+- **AI products**: AI Mode, StoryCaptureAI, GuidesCreationAI, TranslationAI, InsightsAI.
+- **Compliance**: SOC 2 Type II, GDPR.
+- **Top integrations**: Salesforce, HubSpot, Outreach, Salesloft, Gong, marketing automation platforms.

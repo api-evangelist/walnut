@@ -1,0 +1,219 @@
+name: Walnut Well-Known Probe
+description: >-
+  Probe of the RFC 8615 /.well-known/ namespace across every Walnut host named in apis.yml
+  and in the published API documentation. No host serves a real well-known document. The only
+  200 responses came from app.teamwalnut.com, whose single-page-application catch-all returns
+  the app's HTML shell for every unknown path — those are recorded as misses, not documents,
+  and no WellKnown or SecurityTxt pointer is emitted from this probe.
+generated: '2026-08-13'
+method: probed
+source: live HTTPS probes of /.well-known/* on all Walnut hosts
+checked: '2026-08-13'
+hosts:
+  - host: www.walnut.io
+    note: Marketing site (WordPress). All paths 404 with the site's HTML 404 page.
+  - host: help.walnut.io
+    note: Knowledge base (Docusaurus). All paths 404 with the docs 404 page.
+  - host: app.teamwalnut.com
+    note: >-
+      Walnut application. Static-asset paths 404 with an S3 NoSuchKey document; unmatched
+      routes return HTTP 200 carrying the SPA HTML shell. Every 200 below is that shell,
+      not a well-known document.
+  - host: customer-api.teamwalnut.com
+    note: >-
+      Customer Data API (AWS API Gateway). Unmatched paths answer 403
+      {"message":"Missing Authentication Token"} — API Gateway's not-found response.
+  - host: api.teamwalnut.com
+    note: Internal application API (Phoenix/Elixir). All paths 404 {"errors":{"detail":"Not Found"}}.
+probes:
+  - path: /.well-known/security.txt
+    host: www.walnut.io
+    status: 404
+    document: false
+    file: null
+  - path: /.well-known/openid-configuration
+    host: www.walnut.io
+    status: 404
+    document: false
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    host: www.walnut.io
+    status: 404
+    document: false
+    file: null
+  - path: /.well-known/api-catalog
+    host: www.walnut.io
+    status: 404
+    document: false
+    file: null
+  - path: /.well-known/ai-plugin.json
+    host: www.walnut.io
+    status: 404
+    document: false
+    file: null
+  - path: /.well-known/agent-card.json
+    host: www.walnut.io
+    status: 404
+    document: false
+    file: null
+  - path: /.well-known/agent.json
+    host: www.walnut.io
+    status: 404
+    document: false
+    file: null
+  - path: /.well-known/security.txt
+    host: help.walnut.io
+    status: 404
+    document: false
+    file: null
+  - path: /.well-known/openid-configuration
+    host: help.walnut.io
+    status: 404
+    document: false
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    host: help.walnut.io
+    status: 404
+    document: false
+    file: null
+  - path: /.well-known/api-catalog
+    host: help.walnut.io
+    status: 404
+    document: false
+    file: null
+  - path: /.well-known/ai-plugin.json
+    host: help.walnut.io
+    status: 404
+    document: false
+    file: null
+  - path: /.well-known/agent-card.json
+    host: help.walnut.io
+    status: 404
+    document: false
+    file: null
+  - path: /.well-known/agent.json
+    host: help.walnut.io
+    status: 404
+    document: false
+    file: null
+  - path: /.well-known/security.txt
+    host: app.teamwalnut.com
+    status: 404
+    document: false
+    file: null
+  - path: /.well-known/openid-configuration
+    host: app.teamwalnut.com
+    status: 200
+    document: false
+    file: null
+    note: HTML SPA shell, not an OpenID Provider Metadata document. Treated as a miss.
+  - path: /.well-known/oauth-authorization-server
+    host: app.teamwalnut.com
+    status: 200
+    document: false
+    file: null
+    note: HTML SPA shell, not RFC 8414 authorization-server metadata. Treated as a miss.
+  - path: /.well-known/api-catalog
+    host: app.teamwalnut.com
+    status: 200
+    document: false
+    file: null
+    note: HTML SPA shell, not an RFC 9727 api-catalog document. Treated as a miss.
+  - path: /.well-known/ai-plugin.json
+    host: app.teamwalnut.com
+    status: 404
+    document: false
+    file: null
+  - path: /.well-known/agent-card.json
+    host: app.teamwalnut.com
+    status: 404
+    document: false
+    file: null
+  - path: /.well-known/agent.json
+    host: app.teamwalnut.com
+    status: 404
+    document: false
+    file: null
+  - path: /.well-known/security.txt
+    host: customer-api.teamwalnut.com
+    status: 403
+    document: false
+    file: null
+  - path: /.well-known/openid-configuration
+    host: customer-api.teamwalnut.com
+    status: 403
+    document: false
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    host: customer-api.teamwalnut.com
+    status: 403
+    document: false
+    file: null
+  - path: /.well-known/api-catalog
+    host: customer-api.teamwalnut.com
+    status: 403
+    document: false
+    file: null
+  - path: /.well-known/ai-plugin.json
+    host: customer-api.teamwalnut.com
+    status: 403
+    document: false
+    file: null
+  - path: /.well-known/agent-card.json
+    host: customer-api.teamwalnut.com
+    status: 403
+    document: false
+    file: null
+  - path: /.well-known/agent.json
+    host: customer-api.teamwalnut.com
+    status: 403
+    document: false
+    file: null
+  - path: /.well-known/security.txt
+    host: api.teamwalnut.com
+    status: 404
+    document: false
+    file: null
+  - path: /.well-known/openid-configuration
+    host: api.teamwalnut.com
+    status: 404
+    document: false
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    host: api.teamwalnut.com
+    status: 404
+    document: false
+    file: null
+  - path: /.well-known/api-catalog
+    host: api.teamwalnut.com
+    status: 404
+    document: false
+    file: null
+  - path: /.well-known/ai-plugin.json
+    host: api.teamwalnut.com
+    status: 404
+    document: false
+    file: null
+  - path: /.well-known/agent-card.json
+    host: api.teamwalnut.com
+    status: 404
+    document: false
+    file: null
+  - path: /.well-known/agent.json
+    host: api.teamwalnut.com
+    status: 404
+    document: false
+    file: null
+summary:
+  paths_probed: 35
+  documents_found: 0
+  security_txt: false
+  openid_configuration: false
+  oauth_authorization_server: false
+  api_catalog: false
+  ai_plugin: false
+  agent_card: false
+pointer_emitted: false
+pointer_note: >-
+  No WellKnown and no SecurityTxt pointer is wired in apis.yml. Walnut serves no document
+  at any /.well-known/ path on any of its five hosts. This file records the absence.

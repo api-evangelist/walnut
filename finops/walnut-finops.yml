@@ -1,43 +1,95 @@
 name: Walnut FinOps
-description: Financial operations guidance for Walnut API usage. Walnut's Demos API is an enterprise-only feature available on the Scale plan with custom pricing. Cost management focuses on seat counts, contract terms, and add-on feature selection.
+description: >-
+  Cost model for consuming Walnut, and specifically for consuming its API. Walnut sells seats on
+  annual contracts, not API calls: there is no metered API pricing, no per-request rate, no
+  quota-and-overage schedule, and no published price for the only tier that includes API access.
+  The whole cost of reaching the Customer Data API is therefore the cost of a Scale contract,
+  which is quoted rather than listed.
 url: https://www.walnut.io/pricing
+generated: '2026-08-13'
+method: searched
+source: https://www.walnut.io/pricing
 created: '2026-06-13'
-modified: '2026-06-13'
+modified: '2026-08-13'
+
 summary:
   model: Seat-based SaaS subscription with annual contracts
-  apiAccess: Enterprise Scale plan only (custom pricing)
+  api_pricing_model: none — API access is a contract entitlement, not a metered line item
+  apiAccess: Scale (enterprise) plan only, custom pricing
   billingCycle: Annual
-  minimumCommitment: Approximately $9,000/year for a 5-person team on entry-level plan
-  pricingTransparency: Partial (Ignite and Accelerate published; Scale requires custom quote)
+  self_service_purchase: false
+  entry_price: $575/month billed annually (Ignite, no API access)
+  cheapest_api_bearing_plan: Scale — price not published
+  pricingTransparency: >-
+    Partial and inverted for developers. The two tiers WITHOUT the API carry list prices; the one
+    tier WITH the API does not, so an integrator cannot cost an integration from public
+    information.
 
 plans:
   - name: Ignite
     monthlyRate: $575
     annualCost: $6,900
     seats: 3 Editor + 3 Presenter
+    aiCredits: 50000
     apiAccess: false
-    costPerSeat: ~$96/month
-
+    costPerSeat: ~$96/month across 6 seats
   - name: Accelerate
     monthlyRate: $1,550
     annualCost: $18,600
     seats: 6 Editor + 6 Presenter
+    aiCredits: 100000
     apiAccess: false
-    costPerSeat: ~$129/month
-
+    costPerSeat: ~$129/month across 12 seats
   - name: Scale
     monthlyRate: Custom
     annualCost: Custom
     seats: Custom
+    aiCredits: 200000
     apiAccess: true
-    notes: API access (Demos API/MCP) is exclusive to this tier. Contact sales for pricing.
+    notes: >-
+      Demos API and MCP access are exclusive to this tier. Contact sales for pricing.
+
+api_cost_drivers:
+  - driver: Plan tier
+    note: >-
+      The only true gate. Moving from Accelerate to Scale is the entire cost of API access; there
+      is no lighter way to buy it.
+  - driver: Rate limits, not price
+    note: >-
+      Usage is constrained by throughput (50 req/s sustained, 100 burst, 1,000 rows per request)
+      rather than by billing. Heavy extraction costs time, not money. Walnut directs customers to
+      their account representative for rate-limit changes, so higher throughput is a negotiation.
+  - driver: AI Credits
+    note: >-
+      50k / 100k / 200k per tier. A product entitlement for AI demo generation — it is not
+      consumed by API calls, which are read-only analytics queries.
+  - driver: Add-ons
+    note: >-
+      Offline demos, white labeling, advanced translations, video overlays, custom domains, SSO
+      & SCIM, Digital Sales Rooms and sandbox demos are sold separately at some tiers.
 
 costOptimization:
-  - tip: Demos API access requires the Scale plan; evaluate ROI before upgrading from Accelerate.
-  - tip: Multi-year contracts typically receive discounts; negotiate before signing annual.
-  - tip: Seat count is the primary cost driver; audit active users quarterly to avoid paying for unused seats.
-  - tip: Add-ons (offline demos, white labeling, video overlays, SSO) are available separately; bundle into contract for better rates.
-  - tip: The Ignite plan covers core demo analytics; only upgrade to Accelerate if advanced AI insights or Salesforce integration is needed.
+  - tip: >-
+      Cost the API against what it actually returns before upgrading. The current surface is one
+      read-only entity — demo sessions — and Walnut lists demo metadata, playlist sessions and
+      admin analytics as not yet available. If webhooks already carry the session data you need,
+      an Accelerate contract plus a webhook receiver may cover the use case without a Scale upgrade.
+  - tip: >-
+      Prefer GET /demo-sessions/summary over paging the full session list for dashboards. It
+      returns seven aggregations in one request and avoids thousands of paged calls against the
+      rate limit.
+  - tip: >-
+      Use group_by and the fields parameter. Aggregating server-side and selecting 5 of 29 fields
+      cuts both response size and the number of requests needed.
+  - tip: >-
+      Seat count is the primary contract cost driver; audit active Editor and Presenter seats
+      quarterly to avoid paying for unused seats.
+  - tip: >-
+      Negotiate rate limits, add-ons and multi-year terms in the same conversation as the Scale
+      upgrade — all three are contract terms, none are self-service later.
+  - tip: >-
+      There is no self-service key rotation, so factor account-team turnaround into any incident
+      plan that involves revoking a credential.
 
 integrations:
   - name: Salesforce
@@ -50,17 +102,34 @@ integrations:
   - name: Marketo
     type: Marketing Automation
     plan: All plans
+  - name: Pardot
+    type: Marketing Automation
+    plan: All plans
   - name: Zapier
     type: Automation
-    plan: Available (tier details not specified)
+    plan: Available (tier details not published)
+  - name: Slack
+    type: Notifications
+    plan: Available (tier details not published)
+  - name: Highspot
+    type: Sales enablement
+    plan: Available (tier details not published)
   - name: Webhooks
     type: Event notifications
-    plan: Available (tier details not specified)
-    notes: Demo view events sent as JSON to configured endpoints.
+    plan: Available (tier details not published)
+    notes: >-
+      Demo and playlist session events POSTed as JSON to a configured endpoint. Configured by an
+      Admin in the application, not by API.
+  - name: Walnut Uncover
+    type: IP-to-company enrichment
+    plan: Accelerate and Scale
+    notes: Connects to ZoomInfo, Demandbase, 6sense or Clearbit — each a separate vendor cost.
 
 contacts:
   - type: Sales
-    url: https://www.walnut.io/
-    notes: Schedule a demo to get Scale plan pricing and API access details.
+    url: https://www.walnut.io/get-a-demo/
+    notes: Scale plan pricing and API access are quoted here.
   - type: Support
     email: support@walnut.io
+  - type: API key provisioning
+    notes: Walnut account representative. There is no self-service path.

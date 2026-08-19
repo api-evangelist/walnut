@@ -1,0 +1,133 @@
+name: Walnut MCP Server
+description: >-
+  Walnut publishes a first-party Model Context Protocol server that wraps the Walnut Customer
+  Data API and exposes its three read operations as MCP tools to Claude Desktop, Cursor, VS Code
+  and any other MCP client. It is a locally-run bridge, not a hosted endpoint: the provider
+  distributes it as source inside the Walnut monorepo, the operator builds it and runs it over
+  stdio (or an optional local HTTP transport on 127.0.0.1:3001), and every call still carries the
+  operator's own Walnut Customer Data API key. There is no Walnut-hosted MCP URL an agent can
+  reach on its own.
+generated: '2026-08-13'
+method: searched
+source: https://help.walnut.io/help/api/mcp-server
+docs: https://help.walnut.io/help/api/mcp-server
+status: published
+
+deployment:
+  mode: local-stdio
+  endpoint: null
+  install: "cd walnut-mcp-server && npm install && npm run build && WALNUT_API_KEY=your-key node dist/index.js"
+  package: null
+  auth: api-key
+  verified: searched
+
+deployment_notes:
+  - >-
+    mode is local-stdio, not remote. Walnut documents stdio as the recommended transport for
+    Claude Desktop and Cursor, and an optional stateless HTTP mode that a human starts locally
+    and a client POSTs to at http://localhost:3001/mcp. Neither is an internet-reachable Walnut
+    endpoint, so an agent cannot reach Walnut through MCP without a human first installing and
+    running the server.
+  - >-
+    package is null because Walnut does not publish walnut-mcp-server to any public registry.
+    The install instruction reads "Clone or download the walnut-mcp-server package from the
+    Walnut monorepo" — the monorepo is private. Probed 2026-08-13 and absent from npm:
+    walnut-mcp-server, @teamwalnut/mcp-server and @walnut/mcp-server all return
+    {"error":"Not found"} from registry.npmjs.org, and github.com/teamwalnut publishes no such
+    repository (its 26 public repos are forks of ReScript/Elixir open-source libraries).
+  - >-
+    auth is api-key. WALNUT_API_KEY is required at launch; the server exits with an error when
+    it is missing. The key is the same Walnut Customer Data API key, provisioned by a Walnut
+    account representative, and there is no self-service rotation.
+
+requirements:
+  - Node.js 18 or later (the server relies on the built-in fetch API)
+  - A Walnut Customer Data API key (Scale plan; provisioned by a Walnut account representative)
+  - An MCP-compatible client (Claude Desktop, Cursor, VS Code with Copilot Chat, or equivalent)
+
+transports:
+  - name: stdio
+    default: true
+    command: "WALNUT_API_KEY=your-key node dist/index.js"
+    note: Recommended by Walnut for Claude Desktop and Cursor.
+  - name: http
+    default: false
+    command: "WALNUT_API_KEY=your-key node dist/index.js --http"
+    url: http://localhost:3001/mcp
+    note: >-
+      Stateless — one MCP server instance per request. Loopback only; the PORT environment
+      variable changes the port (default 3001).
+
+environment:
+  - name: WALNUT_API_KEY
+    required: true
+    default: null
+    description: Walnut Customer Data API key. The server refuses to start without it.
+  - name: PORT
+    required: false
+    default: '3001'
+    description: HTTP server port. HTTP mode only.
+
+tools:
+  - name: walnut_health_check
+    description: Verifies API connectivity and that the configured API key is valid.
+    wraps: GET /health
+    input_schema_source: >-
+      Not captured. The live tools/list response is behind a locally-run server that requires an
+      API key, so the machine-readable inputSchema could not be introspected anonymously. Names
+      and descriptions here are verbatim from the provider's published tool table.
+  - name: walnut_get_demo_sessions
+    description: >-
+      Queries demo sessions with filtering, grouping, and pagination. Wraps GET /demo-sessions.
+    wraps: GET /demo-sessions
+    documented_parameters:
+      - fields
+      - limit
+      - offset
+      - start_date
+      - end_date
+      - user_type
+      - demo_id
+      - group_by
+      - is_bounced
+      - is_embed
+    input_schema_source: >-
+      Parameters listed here are the query parameters the backing REST operation documents, not
+      a captured MCP inputSchema.
+  - name: walnut_get_demo_sessions_summary
+    description: >-
+      Returns a high-level snapshot: totals, averages, top demos, top countries.
+      Wraps GET /demo-sessions/summary.
+    wraps: GET /demo-sessions/summary
+    documented_parameters:
+      - start_date
+      - end_date
+    input_schema_source: >-
+      Parameters listed here are the query parameters the backing REST operation documents, not
+      a captured MCP inputSchema.
+
+tool_count: 3
+
+limitations:
+  - Read-only. There are no write tools, because the underlying Customer Data API has no write endpoints.
+  - >-
+    Demo session data only. Walnut states demo metadata, playlist sessions and admin analytics
+    will be added as they appear in the underlying API.
+  - API key changes (including revocations) may take up to 5 minutes to take effect due to authorization caching.
+  - >-
+    The Customer Data API rate limits apply through the server — 50 requests/second sustained,
+    100 requests/second burst, 1,000 rows maximum per request. A 429 is surfaced to the MCP client.
+
+availability:
+  plan: Scale (enterprise)
+  note: >-
+    Walnut's published pricing lists "Demos API/MCP" as a Scale-tier capability only. The MCP
+    server is therefore reachable only by customers on an enterprise contract who have been
+    issued a Customer Data API key.
+  source: https://www.walnut.io/pricing
+
+backing_api:
+  name: Walnut Customer Data API
+  base_url: https://customer-api.teamwalnut.com
+  docs: https://help.walnut.io/help/api/customer-data-api
+  auth: x-api-key header

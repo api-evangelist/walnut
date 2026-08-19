@@ -1,0 +1,85 @@
+name: Walnut Sandbox and Test Tooling
+description: >-
+  What an integrator can exercise before going live. Walnut publishes no API sandbox: there is no
+  test mode, no test/live key pair, no seeded fixture data and no separate test host — the
+  Customer Data API has one base URL and one production key, and any integration is developed
+  against real customer analytics. The two genuine pieces of test tooling are an unauthenticated
+  health endpoint and a webhook test-event trigger with an is_test flag on the payload.
+generated: '2026-08-13'
+method: searched
+source: https://help.walnut.io/help/api/quick-start
+docs:
+  - https://help.walnut.io/help/api/quick-start
+  - https://help.walnut.io/help/api/customer-data-api
+  - https://help.walnut.io/help/api/webhooks
+
+sandbox_environment:
+  published: false
+  base_url: null
+  note: >-
+    One environment only — https://customer-api.teamwalnut.com. No sandbox.* or test.* host is
+    documented or resolves.
+
+test_mode:
+  published: false
+  key_prefixes:
+    live: wlt_
+    test: null
+  note: >-
+    Walnut documents a single key prefix (wlt_) with no live/test distinction. Keys are issued
+    once by an account representative and cannot be self-rotated, so an integrator cannot mint a
+    throwaway key for development.
+
+test_data:
+  seeded_fixtures: false
+  test_cards: not-applicable
+  test_accounts: false
+  note: >-
+    No fixture dataset. Every response is the account's real demo-session data, which includes
+    viewer email addresses, IP-derived geography and origin URLs — so development against this
+    API touches production PII from the first call.
+
+tooling:
+  - name: Health check
+    type: unauthenticated probe
+    endpoint: GET https://customer-api.teamwalnut.com/health
+    auth_required: false
+    response: '{ "status": "ok" }'
+    verified: '2026-08-13'
+    http_status: 200
+    purpose: >-
+      Confirms network reachability before any credential is involved. Walnut makes it step 1 of
+      its quick-start. The MCP server wraps the same endpoint as walnut_health_check, where it
+      additionally validates the configured key.
+  - name: Webhook test event
+    type: fixture trigger
+    where: Walnut application, Settings > Webhooks
+    control: '"Send a test event" and "Test connection"'
+    auth_required: Admin role in the Walnut application
+    purpose: >-
+      Delivers a representative payload to a candidate endpoint so a handler can be validated —
+      including signature verification — before production traffic. Walnut explicitly recommends
+      pointing this at a throwaway endpoint first.
+    payload_flag: is_test
+    payload_flag_note: >-
+      Documented as true on test deliveries of the playlist_session_finished payload; the
+      demo_session_finished example does not show the field, so a handler should treat its
+      absence as false rather than assume it is always present.
+
+time_simulation:
+  supported: false
+  note: >-
+    No test clocks. Date behaviour can only be exercised with start_date/end_date filters against
+    whatever real history the account has.
+
+sandbox_demos_disambiguation: >-
+  Walnut's Accelerate plan lists a feature called "Sandbox demos". That is a PRODUCT feature — a
+  non-guided demo a prospect explores freely — and has nothing to do with an API sandbox. It is
+  documented at https://help.walnut.io/help/demos/edit/structure/sandbox-demos and is recorded
+  here only so the name is not mistaken for a developer environment.
+
+gaps:
+  - No sandbox host, test mode, or non-production key.
+  - No fixture or synthetic dataset; development runs against live viewer PII.
+  - No way to replay or redrive a webhook delivery after the fact.
+  - No self-service key issuance, so an integrator cannot isolate a development credential.

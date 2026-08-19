@@ -1,0 +1,118 @@
+name: Walnut Authentication
+description: >-
+  Walnut authenticates the Customer Data API with a single static API key sent in the x-api-key
+  request header. There is no OAuth, no OIDC, no bearer token and no self-service key management:
+  keys are provisioned out-of-band by a Walnut account representative, shown once, and cannot be
+  rotated or recovered by the customer. Webhook deliveries are authenticated in the opposite
+  direction with an HMAC-SHA256 signature. Human access to the Walnut application is separate and
+  supports SAML SSO with SCIM provisioning on the Accelerate and Scale plans.
+generated: '2026-08-13'
+method: searched
+source: https://help.walnut.io/help/api/customer-data-api
+docs:
+  - https://help.walnut.io/help/api/customer-data-api
+  - https://help.walnut.io/help/api/quick-start
+  - https://help.walnut.io/help/api/webhooks
+  - https://help.walnut.io/help/account/users/sso-and-scim
+
+api: Walnut Customer Data API
+base_url: https://customer-api.teamwalnut.com
+
+security_schemes:
+  - id: apiKeyHeader
+    type: apiKey
+    in: header
+    name: x-api-key
+    description: >-
+      Static, long-lived API key. Required on every endpoint except GET /health. Walnut's
+      quick-start documents that keys are prefixed wlt_.
+    key_prefix: wlt_
+    applied_to: all endpoints except /health
+    source: https://help.walnut.io/help/api/customer-data-api
+    example_header: "x-api-key: YOUR_API_KEY"
+  - id: hmacWebhookSignature
+    type: http
+    scheme: hmac
+    direction: inbound-to-customer
+    header: X-Walnut-Signature
+    algorithm: HMAC-SHA256
+    encoding: lowercase hexadecimal
+    signed_payload: the raw request body, exactly as received
+    description: >-
+      Optional but strongly recommended by Walnut. Configured per webhook in Settings >
+      Webhooks; the shared signing key can be reset from the same screen, which immediately
+      invalidates the previous key.
+    source: https://help.walnut.io/help/api/webhooks
+
+oauth2: false
+openid_connect: false
+mutual_tls: false
+bearer_token: false
+
+key_lifecycle:
+  self_service_issuance: false
+  self_service_rotation: false
+  recoverable: false
+  issued_by: Walnut account representative
+  shown_once: true
+  revocation: Request through the Walnut account team.
+  propagation_delay: >-
+    Up to 5 minutes. Walnut documents that API key changes, including revocations, may take up
+    to five minutes to take effect because authorization decisions are cached.
+  notes:
+    - >-
+      "Your API key is provided once by the Walnut team and cannot be recovered if lost."
+      Losing a key requires contacting an account representative for a replacement.
+    - >-
+      There is no scoping mechanism. A key is account-wide and read-only; the API exposes no
+      write operations, so a key cannot mutate data.
+
+unauthenticated_surface:
+  - path: /health
+    method: GET
+    response: '{ "status": "ok" }'
+    note: >-
+      The only endpoint that accepts anonymous requests. Verified live 2026-08-13:
+      GET https://customer-api.teamwalnut.com/health returned HTTP 200 {"status": "ok"}.
+
+failure_modes:
+  - status: 401
+    meaning: Unauthorized
+    cause: Missing or invalid API key.
+    remediation: >-
+      Send the key in the x-api-key header, not Authorization. Verified live 2026-08-13:
+      an unauthenticated GET /demo-sessions returns 401 {"message":"Unauthorized"}.
+  - status: 403
+    meaning: Forbidden
+    cause: The API key is incorrect or no longer active.
+    remediation: Confirm the key with the Walnut account team; allow up to 5 minutes after a key change.
+
+application_authentication:
+  description: >-
+    Authentication for humans signing in to the Walnut application at app.teamwalnut.com. This
+    is a separate surface from the Customer Data API and does not issue API credentials.
+  methods:
+    - name: Email and password
+      available: all plans
+    - name: SSO (SAML)
+      available: Accelerate and Scale
+      source: https://www.walnut.io/pricing
+    - name: SCIM provisioning
+      available: Accelerate and Scale
+      source: https://www.walnut.io/pricing
+  docs: https://help.walnut.io/help/account/users/sso-and-scim
+  roles:
+    - Account Owner
+    - Admin
+    - Editor
+    - Presenter
+    - Collaborator
+  roles_docs: https://help.walnut.io/help/account/users/roles-and-permissions
+
+gaps:
+  - No OAuth 2.0 or OIDC flow for third-party or delegated access.
+  - No self-service key creation, rotation, or revocation, and no key-management UI.
+  - No per-key scoping or least-privilege model; a key is account-wide.
+  - >-
+    No published /.well-known/oauth-authorization-server or /.well-known/openid-configuration
+    on any Walnut host (see well-known/walnut-well-known.yml).

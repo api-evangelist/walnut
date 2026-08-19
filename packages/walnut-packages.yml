@@ -1,0 +1,103 @@
+name: Walnut Packages and SDKs
+description: >-
+  Registry search for first-party Walnut client libraries. There are none. Walnut publishes no
+  SDK on npm, PyPI, RubyGems, crates.io, NuGet, Maven Central, Packagist or pkg.go.dev; its
+  public GitHub organization contains only forks of third-party open-source projects; and its own
+  MCP server — the one piece of first-party code it tells customers to run — is distributed as
+  source from a private monorepo rather than any registry. Integration is expected to be raw HTTP:
+  Walnut's published code samples are bare `requests` (Python) and `fetch` (Node.js) calls. No
+  SDKs pointer is wired in apis.yml, because there is no official SDK to point at.
+generated: '2026-08-13'
+method: searched
+source: >-
+  Unauthenticated registry metadata lookups (registry.npmjs.org, pypi.org, rubygems.org,
+  crates.io, api.nuget.org, search.maven.org, proxy.golang.org) plus the GitHub REST API for
+  github.com/teamwalnut, and Walnut's own code-samples documentation.
+checked: '2026-08-13'
+
+package_count: 0
+official_package_count: 0
+
+packages: []
+
+searched:
+  - registry: npm
+    queries:
+      - walnut-mcp-server
+      - '@teamwalnut/mcp-server'
+      - '@walnut/mcp-server'
+      - '@teamwalnut/sdk'
+      - walnut-sdk
+      - '@walnutio/sdk'
+    result: not found
+    response: '{"error":"Not found"} from registry.npmjs.org for every name'
+  - registry: pypi
+    result: no first-party package found
+  - registry: rubygems
+    result: no first-party package found
+  - registry: maven-central
+    result: no first-party package found
+  - registry: nuget
+    result: no first-party package found
+  - registry: crates.io
+    result: no first-party package found
+  - registry: packagist
+    result: no first-party package found
+  - registry: pkg.go.dev
+    result: no first-party package found
+
+github_organization:
+  url: https://github.com/teamwalnut
+  public_repo_count: 26
+  first_party_libraries: 0
+  finding: >-
+    Every public repository is a fork of an unrelated open-source project — rescript-urql,
+    graphql-ppx, absinthe, kaffy, workos-elixir, bs-jest, puppeteer, cloudex and similar. Walnut
+    publishes no client library, no MCP server and no API tooling of its own here. Most repos
+    were last touched in 2024; the most recently updated is cloudex (2026-07-06), itself a fork.
+    Two carry meaningful stars (graphql-ppx 263, rescript-urql 240) and are upstream projects
+    Walnut engineers contributed to, not Walnut products.
+
+non_registry_distributions:
+  - name: walnut-mcp-server
+    kind: source, private monorepo
+    registry: none
+    official: true
+    version: null
+    published: null
+    note: >-
+      Walnut's MCP server documentation instructs users to "Clone or download the
+      walnut-mcp-server package from the Walnut monorepo", then npm install and npm run build.
+      The monorepo is not public and the package is absent from npm (verified 2026-08-13), so
+      there is no version or release date to record — checked, nothing to record. A consumer
+      cannot pin a version, audit a dependency tree, or receive an update notification.
+    docs: https://help.walnut.io/help/api/mcp-server
+  - name: Walnut - Sales Demo Platform (Chrome extension)
+    kind: browser extension
+    registry: chrome-web-store
+    official: true
+    version: null
+    published: null
+    version_note: >-
+      The Chrome Web Store publishes no unauthenticated metadata endpoint for extension version
+      or release date, and the listing page renders client-side. Checked; nothing machine-readable
+      to record. This is end-user demo-capture tooling, not a client library for the API.
+    url: https://chromewebstore.google.com/detail/walnut-sales-demo-platfor/mccegadjoafkdahijbbincjlicfjjibd
+    docs: https://help.walnut.io/help/demos/getting-started/chrome-extension
+
+published_integration_code:
+  note: >-
+    Walnut publishes copy-paste samples rather than a library. The Python examples use `requests`
+    directly against https://customer-api.teamwalnut.com with an x-api-key header; the Node.js
+    examples use built-in fetch. There is no wrapper to install, no typed model of the 29-field
+    session object, and no pagination helper — the pagination loop is written out by hand in the
+    docs.
+  url: https://help.walnut.io/help/api/code-samples
+
+implications:
+  - >-
+    No SDK means no versioned client contract. Because Walnut also publishes no OpenAPI, there is
+    nothing from which one could be generated either.
+  - >-
+    The absence is consistent rather than decayed: there is no abandoned first-party package
+    whose last release predates the API. Nothing was ever shipped.

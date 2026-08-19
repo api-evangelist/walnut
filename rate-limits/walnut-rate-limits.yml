@@ -1,26 +1,113 @@
 name: Walnut Rate Limits
-description: Walnut does not publicly document specific API rate limits. The Demos API is available exclusively on the Scale (enterprise) plan with custom pricing; rate limit details are negotiated as part of enterprise contracts. Webhooks must receive HTTP 200 or 201 responses within 30 seconds or Walnut may suspend delivery.
-url: https://help.walnut.io/hc/en-us
+description: >-
+  Walnut publishes explicit per-key rate limits for the Customer Data API: 50 requests/second
+  sustained, 100 requests/second burst, and a row cap per request. Exhaustion returns 429 and the
+  only remediation guidance is exponential backoff. What Walnut does NOT publish is any runtime
+  signal — no RateLimit-*, no X-RateLimit-*, and no Retry-After — so a client has to infer its
+  position against the limit from the numbers in the docs rather than read it off the response.
+  The row cap is stated inconsistently across two Walnut pages and that conflict is recorded, not
+  resolved.
+url: https://help.walnut.io/help/api/customer-data-api
+generated: '2026-08-13'
+method: searched
+source: https://help.walnut.io/help/api/customer-data-api
+docs:
+  - https://help.walnut.io/help/api/customer-data-api
+  - https://help.walnut.io/help/api/quick-start
+  - https://help.walnut.io/help/api/mcp-server
 created: '2026-06-13'
-modified: '2026-06-13'
+modified: '2026-08-13'
+
+api: Walnut Customer Data API
+base_url: https://customer-api.teamwalnut.com
+
+limit_count: 3
+
 rateLimits:
-  - name: API Rate Limits
-    description: Specific rate limits for the Walnut Demos API are not publicly documented. As an enterprise-only feature (Scale plan), limits are defined per contract.
-    documented: false
-    notes: Contact Walnut sales for enterprise API rate limit details.
-
-  - name: Webhook Delivery Timeout
-    description: Webhook endpoints must respond with HTTP 200 or 201 within 30 seconds. If the endpoint does not respond in time, Walnut considers it non-functional and may suspend webhook delivery.
-    type: Webhook
-    timeout: 30 seconds
-    successCodes:
-      - 200
-      - 201
+  - name: Sustained throughput
+    scope: per-api-key
+    window: 1 second
+    limit: 50
+    unit: requests
     documented: true
-    url: https://help.walnut.io/hc/en-us/sections/22393747761555-Webhooks
+    source: https://help.walnut.io/help/api/customer-data-api
+  - name: Burst allowance
+    scope: per-api-key
+    window: 1 second
+    limit: 100
+    unit: requests
+    burst: true
+    documented: true
+    source: https://help.walnut.io/help/api/customer-data-api
+  - name: Max rows per request
+    scope: per-request
+    window: null
+    limit: 1000
+    unit: rows
+    documented: true
+    conflict: true
+    conflict_note: >-
+      Walnut states two different values. The Customer Data API reference says "Max rows per
+      request | 1,000", documents limit as "integer, default 100, maximum: 1,000", and lists
+      "Maximum of 1,000 rows per request" among its current limitations. The Quick-Start page's
+      reference table says "Max rows per request 10,000" and "Default rows per request 1,000",
+      its filter table says "limit=100 ... (max 10,000)", and its integration recipes issue
+      limit=10000. The MCP server documentation repeats the 1,000 figure. Treat 1,000 as the safe
+      ceiling and confirm 10,000 with Walnut before depending on it.
+    source: https://help.walnut.io/help/api/customer-data-api
 
-notes:
-  - The Walnut Demos API is only available on the Scale enterprise plan.
-  - Rate limit details should be requested directly from Walnut during enterprise contract negotiations.
-  - Webhook payload format is JSON (Content-Type application/json).
-  - Webhook verification uses a shared key provided during webhook setup.
+response_headers: []
+response_headers_note: >-
+  None documented and none observable. Walnut publishes no RateLimit-Limit / RateLimit-Remaining
+  / RateLimit-Reset, no X-RateLimit-* equivalents, and no Retry-After on the 429. Live
+  verification is impossible without a key, because every rate-limited endpoint requires
+  x-api-key — an unauthenticated GET /demo-sessions returns 401 before any limit is evaluated
+  (probed 2026-08-13). The one unauthenticated endpoint, GET /health, returned 200 with no
+  rate-limit headers.
+
+exhaustion:
+  status: 429
+  status_text: Too Many Requests
+  body: '{ "error": "..." }'
+  retry_after_header: false
+  guidance: >-
+    "Requests exceeding the rate limit will receive a 429 Too Many Requests response. Implement
+    exponential backoff in your integration." No initial delay, ceiling, jitter or maximum retry
+    count is specified.
+
+pagination_interaction:
+  note: >-
+    The row cap and the rate limit compound. Exporting a large dataset requires offset paging at
+    up to 1,000 rows per call while staying under 50 requests/second, and Walnut warns separately
+    that deep offsets slow down because there is no cursor pagination.
+
+mcp_inheritance:
+  note: >-
+    The Walnut MCP Server is a thin bridge over the same API, so the same limits apply to agent
+    traffic. Walnut states that a 429 is surfaced to the MCP client.
+  source: https://help.walnut.io/help/api/mcp-server
+
+quotas:
+  - name: AI Credits
+    scope: per-account, per-plan
+    values:
+      Ignite: 50000
+      Accelerate: 100000
+      Scale: 200000
+    note: >-
+      A product-side entitlement for AI demo generation, not an API rate limit. Recorded here
+      because it is the only other published numeric quota on the account.
+    source: https://www.walnut.io/pricing
+
+enterprise_negotiation:
+  note: >-
+    The API is a Scale-plan capability, and Walnut directs customers to their account
+    representative for "rate limit changes" — so the published figures are defaults that an
+    enterprise contract can move.
+  source: https://help.walnut.io/help/api/mcp-server
+
+gaps:
+  - No rate-limit response headers, so a client cannot see how much budget it has left.
+  - No Retry-After on 429, so backoff timing is guesswork.
+  - No documented per-endpoint or per-account limit distinct from the per-key limit.
+  - The row cap is published as two different numbers on two Walnut pages.

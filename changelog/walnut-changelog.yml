@@ -1,0 +1,114 @@
+name: Walnut Product Updates
+description: >-
+  Walnut publishes a dated, public release-notes stream in its knowledge base — roughly monthly
+  since March 2021, with occasional mid-month posts, and machine-readable through the knowledge
+  base catalog at help.walnut.io/api/v1/docs.json. It is a PRODUCT changelog: it records
+  application features shipped, not API contract changes. Nothing in the recent window announces
+  or deprecates a Customer Data API endpoint, field, or behaviour, so an API consumer gets no
+  change signal from it.
+generated: '2026-08-13'
+method: searched
+source: https://help.walnut.io/help/updates
+url: https://help.walnut.io/help/updates
+feed: https://help.walnut.io/api/v1/docs.json
+markdown_source_pattern: https://help.walnut.io/articles/help/updates/<slug>.md
+
+scheme: dated
+cadence: monthly, with occasional mid-month posts
+scope: product
+covers_api: false
+covers_breaking_changes: false
+versioned_releases: false
+current_version: null
+oldest_entry: '2021-03'
+entry_count_published: 41
+recent_window: 2026-01 through 2026-08
+
+api_change_signal:
+  present: false
+  note: >-
+    Reviewed every 2026 entry. None mentions the Customer Data API, the MCP server, webhook
+    payload fields, or any endpoint change. The API's own documentation carries an undated
+    "Current Limitations" list instead of release notes, and Walnut's API overview page states
+    "Full API reference is being auto-generated".
+
+entries:
+  - date: '2026-08-13'
+    title: Aug 13, 2026
+    url: https://help.walnut.io/help/updates/aug13
+    breaking: false
+    api_affecting: false
+    highlights:
+      - Demos translated inside the captured screens, not just the guides
+      - Figma designs imported straight into Walnut
+      - Section library for Playlists and Deal Rooms
+      - Email verification on the demo gate
+      - Deal Rooms without a CRM opportunity
+      - Gradient backgrounds and auto-advance for Playlists
+      - Bulk tagging in the Content Library
+      - Renameable Mutual Action Plan
+      - Zoom effect on guide steps
+  - date: '2026-07'
+    title: July 2026
+    url: https://help.walnut.io/help/updates/july-2026
+    breaking: false
+    api_affecting: false
+    highlights:
+      - AI Mode open by default in the template editor with expanded editing powers
+      - Draft with AI for inline writing
+      - Export a demo as a video (MP4/GIF)
+      - Dark Mode across the app
+      - In-app guide translation editing
+      - Simulated typing and gliding guide cues
+      - Publish control for Deal Rooms and Playlists
+      - Multi-page Playlists with in-hub search
+      - Bulk add to allow and block lists
+      - Per-user analytics for Playlists and Deal Rooms
+  - date: '2026-06'
+    title: June 2026
+    url: https://help.walnut.io/help/updates/june-2026
+    breaking: false
+    api_affecting: false
+    highlights:
+      - Fast Templates gallery for Playlists and Deal Rooms
+      - Guides Brand Voice controls for AI-generated guide text
+      - Deal Room and Playlist UX upgrades (rich text, checklists, inline Office viewing, co-branded headers)
+      - Playlist selection controls
+      - Content Library loads up to 95% faster
+  - date: '2026-04'
+    title: April 2026
+    url: https://help.walnut.io/help/updates/april-2026
+    breaking: false
+    api_affecting: false
+    highlights:
+      - Translated voice over for localized demos
+      - Chart editing in AI Mode
+      - AI-generated text-to-speech for annotations
+      - Present Playlists offline
+      - Folders in the Media Resource Hub
+  - date: '2026-02'
+    title: February 2026
+    url: https://help.walnut.io/help/updates/february-2026
+    breaking: false
+    api_affecting: false
+    highlights:
+      - Video screen recording inside Walnut
+      - AI Mode workflow improvements
+      - Access codes for Playlists and Deal Rooms
+  - date: '2026-01'
+    title: January 2026 wrapped
+    url: https://help.walnut.io/help/updates/january-2026
+    breaking: false
+    api_affecting: false
+    highlights:
+      - AI Mode workflow expansion
+      - AI image generation
+      - Templates version control
+      - Integration health monitoring
+      - Global edits workflow improvements
+
+gaps:
+  - No RSS or Atom feed for the changelog itself (the status page has one; the release notes do not).
+  - No entry covers the Customer Data API or the MCP server.
+  - No breaking-change flag, version number, or migration note on any entry.
+  - March and May 2026 have no published entry; the stream is monthly but not strictly.

@@ -1,71 +1,143 @@
 name: Walnut Plans and Pricing
-description: Walnut offers three main pricing tiers for its AI-powered sales demo platform. All plans are billed annually. The Demos API and MCP access are exclusive to the Scale enterprise plan.
+description: >-
+  Walnut publishes three seat-based tiers, all billed annually. Two carry a list price; the
+  enterprise tier does not. API access is the dividing line: "Demos API/MCP" appears only in the
+  Scale column, so the Customer Data API and the MCP server are unreachable on Ignite and
+  Accelerate at any volume. Each tier also carries an AI Credits allowance, which is the only
+  other published numeric entitlement.
 url: https://www.walnut.io/pricing
+generated: '2026-08-13'
+method: searched
+source: https://www.walnut.io/pricing
 created: '2026-06-13'
-modified: '2026-06-13'
+modified: '2026-08-13'
+checked: '2026-08-13'
+http_status: 200
+
+currency: USD
+billing_period: annual
+billing_note: Both published prices are quoted "Per month, billed annually".
+plan_count: 3
+api_bearing_plan_count: 1
+free_tier: false
+trial: false
+self_service_signup: false
+signup_note: >-
+  Every tier's call to action is "Book a demo" or "Request a quote". There is no self-service
+  checkout, so even the list-priced tiers route through sales.
+
 plans:
   - name: Ignite
-    description: Best for teams starting their guided demo journey. Includes 3 Editor seats and 3 Presenter seats with core demo creation and analytics features.
-    price: $575/month
-    billing: Annual
-    seats: 3 Editor + 3 Presenter
+    description: Best for teams starting their guided demo journey to drive qualified opportunities.
+    price: 575
+    price_display: $575
+    currency: USD
+    period: month
+    billing: annual
+    seats:
+      editor: 3
+      presenter: 3
+    included_quota:
+      ai_credits: 50000
+    feature_count: 15
+    apiAccess: false
+    mcpAccess: false
     features:
       - Unlimited demos
-      - AI-powered demo creation
+      - Intuitive demo editor
+      - AI-powered demo creation (StoryCapture AI, AI Mode)
       - Choose your own adventure Playlist
-      - Demo analytics
-      - HubSpot integration
-      - Marketo integration
-      - Pardot integration
-      - CRM integrations
+      - Demo analytics & engagement tracking
+      - Marketing tool integrations (HubSpot, Marketo, Pardot)
+      - CRM integrations (HubSpot, Salesforce)
+    services:
       - Scaled success program
-      - Campaign-specific onboarding
-    apiAccess: false
-
+      - Campaign-specific onboarding sessions
   - name: Accelerate
-    description: Best for teams creating tailored demos with advanced analytics. Includes 6 Editor seats and 6 Presenter seats with advanced personalization and AI insights.
-    price: $1,550/month
-    billing: Annual
-    seats: 6 Editor + 6 Presenter
+    description: Best for teams creating tailored demos for diverse use cases with advanced analytics.
+    price: 1550
+    price_display: $1,550
+    currency: USD
+    period: month
+    billing: annual
+    most_popular: true
+    seats:
+      editor: 6
+      presenter: 6
+    included_quota:
+      ai_credits: 100000
+    feature_count: 25
+    apiAccess: false
+    mcpAccess: false
     features:
       - All Ignite features
       - Sandbox demos
       - Prospect personalization
       - Video overlays
       - Sales & Customer Hub Playlists
-      - Advanced analytics
+      - Advanced analytics & engagement tracking
       - AI-powered insights (InsightsAI)
-      - Walnut Uncover
+      - Walnut Uncover (IP-to-company via ZoomInfo, Demandbase, 6sense or Clearbit)
       - Advanced Salesforce integration
       - SSO & SCIM
-      - White-labeled branding
+      - White-labeled brand experience
+    services:
       - Dedicated CSM
-      - 10 strategic onboarding hours
-    apiAccess: false
-
+      - 10 strategic onboarding & optimization hours
   - name: Scale
-    description: Enterprise solution for global team standardization. Custom seat limits with full platform access including Demos API/MCP, digital sales rooms, and advanced translations.
-    price: Custom
-    billing: Annual (custom contract)
-    seats: Custom
+    description: Best for enterprises standardizing demo excellence across global teams.
+    price: null
+    price_display: Custom
+    currency: USD
+    period: null
+    billing: annual (custom contract)
+    seats:
+      editor: custom
+      presenter: custom
+    included_quota:
+      ai_credits: 200000
+    feature_count: 30
+    apiAccess: true
+    mcpAccess: true
     features:
       - All Accelerate features
       - Digital Sales Rooms
-      - Advanced translations (243 languages)
-      - Demos API/MCP access
+      - Advanced Translations (up to 243 languages)
+      - Demos API/MCP
+    services:
       - Dedicated Strategic CSM
-      - White-glove services
-      - Quarterly business reviews
-      - Custom seat limits
-    apiAccess: true
-    apiNote: Demos API and MCP (Model Context Protocol) access are exclusively available on the Scale plan.
+      - White-glove professional services
+      - Quarterly business reviews & strategy sessions
+    apiNote: >-
+      Walnut describes the entitlement as "Demos API/MCP — Gain programmatic, self-service access
+      to all your demo engagement data. Build custom reports, integrate with BI tools, or analyze
+      demo performance alongside your other revenue metrics." In practice the API key itself is
+      not self-service: it is issued once by an account representative and cannot be rotated by
+      the customer.
+
+api_access:
+  gated: true
+  gating_tier: Scale
+  gating_note: >-
+    The Customer Data API and the MCP server are Scale-only. There is no metered, pay-as-you-go,
+    or per-call pricing for API usage — access is a contract term, not a line item, and no
+    request quota or overage rate is published for it.
+  overage: null
+  metering: none
 
 addOns:
   - Offline demos
   - White labeling
   - Advanced translations
   - Video overlays
-  - SSO & SCIM
+  - Custom domains
   - Digital Sales Rooms
-  - Sales/Customer Hub Playlists
   - Sandbox demos
+
+pricing_transparency:
+  list_prices_published: 2
+  custom_quote_required: 1
+  api_pricing_published: false
+  note: >-
+    A developer evaluating the API cannot learn what it costs. The tier that carries it is the
+    only tier without a published price.

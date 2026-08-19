@@ -1,0 +1,99 @@
+name: Walnut MCP-to-REST Tool Crosswalk
+description: >-
+  Binds each tool the Walnut MCP Server registers to the Walnut Customer Data API operation it
+  wraps. Walnut states the binding itself in its own MCP documentation ("Wraps GET
+  /demo-sessions"), so every row here is a provider-stated mapping rather than an inference,
+  and confidence is high throughout. The crosswalk is complete in both directions: three tools,
+  three REST operations, no MCP-only tools and no unexposed REST operations.
+generated: '2026-08-13'
+method: derived
+source: >-
+  https://help.walnut.io/help/api/mcp-server (tool table, with the "Wraps ..." binding stated by
+  Walnut) and https://help.walnut.io/help/api/customer-data-api (endpoint table, parameters,
+  response schemas)
+
+caveat: >-
+  Walnut publishes no OpenAPI document, so the `rest` column carries METHOD + PATH rather than
+  operationIds — the Customer Data API has no operationIds to cite. The `operation_id` field on
+  each row is a stable local identifier assigned by this artifact for cross-referencing within
+  the repo; it is NOT a Walnut-published identifier and must not be treated as one.
+
+surfaces:
+  openapi:
+    published: false
+    note: >-
+      No OpenAPI/Swagger document is served on any Walnut host. Probed 2026-08-13:
+      customer-api.teamwalnut.com/openapi.json, /openapi.yaml, /swagger.json, /docs, /redoc and
+      /api-docs all return 403 {"message":"Missing Authentication Token"} (AWS API Gateway's
+      not-found response); app.teamwalnut.com/openapi.json and /swagger.json return 404
+      NoSuchKey; www.walnut.io/openapi.json and help.walnut.io/openapi.json return HTML 404
+      pages. Walnut's own API overview page states "Full API reference is being auto-generated".
+    gated: false
+  graphql:
+    published: false
+    endpoint: null
+  mcp:
+    url: null
+    transport: stdio (local), optional local HTTP at http://localhost:3001/mcp
+    gated: true
+    gated_note: >-
+      The server is not hosted by Walnut. It runs locally, requires WALNUT_API_KEY at launch,
+      and is distributed as source from a private monorepo, so tools/list could not be
+      introspected anonymously. Tool names and descriptions are read from the provider's
+      published tool table.
+  rest:
+    base_url: https://customer-api.teamwalnut.com
+    auth: x-api-key header
+    docs: https://help.walnut.io/help/api/customer-data-api
+
+crosswalk:
+  - tool: walnut_health_check
+    category: diagnostics
+    rest:
+      - GET /health
+    operation_id: getHealth
+    binding: one-to-one
+    confidence: high
+    note: >-
+      Provider-stated. The REST operation is the only unauthenticated endpoint on the API; the
+      tool additionally reports whether the configured API key is valid.
+  - tool: walnut_get_demo_sessions
+    category: analytics
+    rest:
+      - GET /demo-sessions
+    operation_id: listDemoSessions
+    binding: one-to-one
+    confidence: high
+    note: >-
+      Provider-stated ("Wraps GET /demo-sessions"). The tool inherits the operation's ten
+      documented query parameters — fields, limit, offset, start_date, end_date, user_type,
+      demo_id, group_by, is_bounced, is_embed — and both the individual-session and the
+      aggregated (group_by) response shapes.
+  - tool: walnut_get_demo_sessions_summary
+    category: analytics
+    rest:
+      - GET /demo-sessions/summary
+    operation_id: getDemoSessionsSummary
+    binding: one-to-one
+    confidence: high
+    note: >-
+      Provider-stated ("Wraps GET /demo-sessions/summary"). The tool inherits the operation's
+      two documented query parameters (start_date, end_date) and its seven-block summary
+      response.
+
+mcp_only: []
+
+rest_only: []
+
+coverage:
+  mcp_tools: 3
+  rest_operations: 3
+  bound: 3
+  mcp_only: 0
+  rest_only: 0
+  tool_coverage_pct: 100
+  operation_coverage_pct: 100
+  note: >-
+    The MCP server is a complete, one-to-one bridge over the published REST surface. Nothing is
+    exposed to agents that is not also available over HTTP, and nothing available over HTTP is
+    withheld from agents.

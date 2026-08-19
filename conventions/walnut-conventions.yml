@@ -1,0 +1,196 @@
+name: Walnut API Conventions
+description: >-
+  Cross-cutting runtime semantics of the Walnut Customer Data API, read from the provider's own
+  developer documentation. The API is a small, read-only analytics surface: static API-key auth,
+  offset pagination, comma-separated field selection, query-parameter filtering, an optional
+  group_by aggregation mode that changes the response shape, a flat single-key error envelope,
+  and a fixed newest-first sort. It publishes no idempotency key, no request-id header, no
+  versioning scheme and no rate-limit response headers.
+generated: '2026-08-13'
+method: searched
+source: https://help.walnut.io/help/api/customer-data-api
+docs:
+  - https://help.walnut.io/help/api/customer-data-api
+  - https://help.walnut.io/help/api/quick-start
+  - https://help.walnut.io/help/api/code-samples
+  - https://help.walnut.io/help/api/webhooks
+
+api: Walnut Customer Data API
+base_url: https://customer-api.teamwalnut.com
+style: REST over HTTPS, JSON responses
+read_only: true
+
+auth:
+  style: api-key-header
+  header: x-api-key
+  key_prefix: wlt_
+  exceptions:
+    - GET /health requires no authentication.
+  detail: authentication/walnut-authentication.yml
+
+idempotency:
+  supported: false
+  request_header: null
+  scope: null
+  retention: null
+  note: >-
+    Walnut publishes no idempotency key or idempotent-retry mechanism. The API is entirely
+    read-only — Walnut lists "Read-only access: the API supports data retrieval only; there are
+    no write endpoints" among its current limitations — so GET requests are naturally safe to
+    repeat, but there is no Idempotency-Key header and no replay window. Separately, Walnut
+    instructs WEBHOOK CONSUMERS to build idempotent handlers and deduplicate on session_id +
+    event because retries can arrive out of order; that is guidance for the customer's endpoint,
+    not an idempotency guarantee offered by the Walnut API. No Idempotency pointer is wired in
+    apis.yml for this reason.
+
+pagination:
+  style: offset-limit
+  params:
+    - name: limit
+      default: 100
+      max: 1000
+      note: >-
+        Walnut's two published pages disagree. The Customer Data API reference states
+        "limit | integer | 100 | Max rows to return (maximum: 1,000)" and lists "Maximum of
+        1,000 rows per request" as a hard limitation. The Quick-Start reference table states
+        "Max rows per request 10,000 / Default rows per request 1,000" and its filter table says
+        "limit=100 ... (max 10,000)", and an integration recipe uses limit=10000. The conflict is
+        recorded, not resolved; a consumer should treat 1,000 as the safe ceiling and confirm
+        with Walnut before relying on 10,000.
+    - name: offset
+      default: 0
+      note: Increment by the limit value until fewer rows than limit are returned.
+  cursor: false
+  response_fields:
+    - name: count
+      meaning: Rows returned in this response page.
+    - name: total
+      meaning: Total matching rows across all pages.
+    - name: limit
+      meaning: Echo of the requested limit.
+    - name: offset
+      meaning: Echo of the requested offset.
+  termination: Stop when count < limit.
+  caveats:
+    - >-
+      Offset pagination only; Walnut documents that there is no cursor-based pagination and that
+      deep offsets may slow down on very large datasets.
+
+sorting:
+  configurable: false
+  default: started_at descending (newest first)
+  note: Walnut documents "There is currently no parameter to change sort order."
+
+field_selection:
+  supported: true
+  param: fields
+  format: comma-separated field names
+  default: all 29 fields
+  example: fields=id,demo_id,started_at,is_completed,user_type
+  error_on_unknown_field: '400 Bad Request ({"error": "Invalid fields requested"})'
+
+filtering:
+  style: query parameters
+  params:
+    - name: start_date
+      format: YYYY-MM-DD
+      inclusive: true
+    - name: end_date
+      format: YYYY-MM-DD
+      inclusive: true
+    - name: user_type
+      values: [external, internal, all]
+    - name: demo_id
+      format: UUID
+    - name: is_bounced
+      values: ['true', 'false']
+    - name: is_embed
+      values: ['true', 'false']
+
+aggregation:
+  supported: true
+  param: group_by
+  dimensions: [date, user_type, viewer_type, demo_id, is_embed, demo_name]
+  multi_dimension: true
+  multi_dimension_format: comma-separated, e.g. group_by=date,user_type
+  response_shape_changes: true
+  response_note: >-
+    With group_by the `data` member changes from an array of session objects to an object keyed
+    by dimension value. Composite keys join dimensions with the pipe character, e.g.
+    "2026-03-02|external". Dimensions with zero sessions are omitted entirely — absence means
+    zero, not null.
+
+expansion:
+  supported: false
+  note: No $expand / include / sparse-fieldset relation expansion. The API returns one flat object type.
+
+metadata:
+  custom_metadata_fields: false
+  note: No customer-defined metadata attributes on API resources.
+
+tracing:
+  request_id_header: null
+  correlation_id: null
+  note: >-
+    Walnut publishes no request-id or correlation-id response header. Its support guidance asks
+    customers to report "the request URL, timestamp, and HTTP status code" instead, which is what
+    a missing request identifier forces.
+
+versioning:
+  scheme: none-published
+  in_path: false
+  in_header: false
+  current_version: null
+  note: >-
+    The base URL carries no version segment (https://customer-api.teamwalnut.com/demo-sessions),
+    and no version header or query parameter is documented. Walnut describes the surface as
+    "this initial release" and names future additions (demo metadata, playlist sessions, admin
+    analytics) without stating how they will be versioned. See lifecycle/walnut-lifecycle.yml.
+
+error_envelope:
+  shape: flat single-key JSON object
+  media_type: application/json
+  problem_json: false
+  rfc9457: false
+  example: '{ "error": "Invalid fields requested" }'
+  fields:
+    - name: error
+      type: string
+      description: Human-readable message. No machine-readable code, type URI, or field pointer.
+  note: >-
+    Walnut states "Error responses never expose internal details." Observed live responses use a
+    different key on the gateway edge — an unauthenticated GET /demo-sessions returned
+    {"message":"Unauthorized"} and unmatched paths return {"message":"Missing Authentication
+    Token"} — so a consumer must handle both `error` (application) and `message` (AWS API
+    Gateway) envelopes. Detail: errors/walnut-problem-types.yml.
+
+rate_limiting:
+  documented: true
+  sustained: 50 requests/second per API key
+  burst: 100 requests/second per API key
+  exhaustion_status: 429
+  response_headers: []
+  response_headers_note: >-
+    No X-RateLimit-*, RateLimit-* or Retry-After header is documented, and none could be observed
+    because every rate-limited endpoint requires a key. Walnut's only published guidance is
+    "Implement exponential backoff in your integration." Detail: rate-limits/walnut-rate-limits.yml.
+
+webhook_conventions:
+  transport: HTTP POST, application/json
+  expected_response: HTTP 200 or 201 within 30 seconds
+  retries: up to 3, exponential backoff
+  ordering: not guaranteed — retries are independent, so events can arrive out of order
+  deduplication_keys: [session_id, event]
+  signature_header: X-Walnut-Signature
+  signature_algorithm: HMAC-SHA256 over the raw body, lowercase hex
+  delivery_latency: >-
+    Up to two hours for demo sessions, because some metrics are calculated after the session ends.
+  detail: asyncapi/walnut-webhooks.yml
+
+cross_references:
+  authentication: authentication/walnut-authentication.yml
+  errors: errors/walnut-problem-types.yml
+  lifecycle: lifecycle/walnut-lifecycle.yml
+  rate_limits: rate-limits/walnut-rate-limits.yml
+  data_model: data-model/walnut-data-model.yml
+  webhooks: asyncapi/walnut-webhooks.yml

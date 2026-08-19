@@ -1,0 +1,124 @@
+name: Walnut API Lifecycle
+description: >-
+  Versioning, deprecation, availability and support posture for the Walnut Customer Data API and
+  the Walnut platform. Walnut runs a real Atlassian Statuspage with a public JSON API and four
+  monitored components, and publishes a dated monthly product changelog. It publishes no API
+  versioning scheme, no deprecation policy, no Sunset/Deprecation header commitment and no public
+  SLA — the API surface is described as an "initial release" with a named list of things that do
+  not exist yet.
+generated: '2026-08-13'
+method: searched
+source: https://help.walnut.io/help/api/customer-data-api
+docs:
+  - https://help.walnut.io/help/api/customer-data-api
+  - https://help.walnut.io/help/updates
+  - https://status.walnut.io/
+
+api: Walnut Customer Data API
+base_url: https://customer-api.teamwalnut.com
+
+versioning:
+  published: false
+  scheme: none
+  in_path: false
+  in_header: false
+  in_query: false
+  current_version: null
+  note: >-
+    No version segment, header or parameter appears anywhere in the published API surface. Walnut
+    calls it "this initial release" and names four data types it intends to add later — demo
+    metadata, playlist sessions, admin analytics, and additional endpoints — without saying how
+    those additions will be versioned or how a breaking change would be signalled.
+  release_stage: initial release / GA on the Scale plan
+
+deprecation_policy:
+  published: false
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  notice_period: null
+  deprecated_operations: []
+  note: >-
+    Walnut publishes no API deprecation policy, no notice period, and no RFC 8594 Sunset or
+    Deprecation response headers. No Deprecation pointer is wired in apis.yml because there is
+    nothing to point at.
+
+breaking_change_policy:
+  published: false
+  note: >-
+    Not documented for the API. The monthly product changelog covers application features, not
+    API contract changes, and no API-specific release notes exist.
+
+status_page:
+  published: true
+  url: https://status.walnut.io/
+  provider: Atlassian Statuspage
+  page_id: sgyx7wydvhvz
+  machine_readable: true
+  api:
+    summary: https://status.walnut.io/api/v2/summary.json
+    status: https://status.walnut.io/api/v2/status.json
+    history_feed: https://status.walnut.io/history.rss
+  probed: '2026-08-13'
+  http_status: 200
+  components:
+    - name: App
+      description: Management console (view and edit storylines)
+    - name: Demo
+      description: Playing a walnut storyline (demo)
+    - name: Recording
+      description: Capturing a storyline (demo)
+    - name: Demo Customization Tool
+      description: The tool used to create and share demos
+  subscriptions: https://help.walnut.io/help/account/status-page
+  gap: >-
+    None of the four monitored components covers the Customer Data API host
+    (customer-api.teamwalnut.com) or webhook delivery. An API consumer cannot tell from this page
+    whether the API itself is degraded.
+
+changelog:
+  published: true
+  url: https://help.walnut.io/help/updates
+  cadence: monthly, with occasional mid-month posts
+  scope: product features
+  api_scope: false
+  detail: changelog/walnut-changelog.yml
+
+sla:
+  published: false
+  uptime_commitment: null
+  support_response_time: null
+  note: >-
+    No public SLA. Availability and support terms are governed by the Master Services Agreement
+    (https://www.walnut.io/msa/) and negotiated per enterprise contract.
+
+support:
+  channels:
+    - type: account team
+      note: >-
+        The documented path for API key provisioning, replacement, rate-limit changes and
+        technical issues. Walnut asks for the request URL, timestamp and HTTP status code.
+    - type: help center
+      url: https://help.walnut.io/help/api
+    - type: email
+      value: support@walnut.io
+  self_service_developer_support: false
+
+availability:
+  api_plan: Scale (enterprise)
+  note: >-
+    "Demos API/MCP" appears only in the Scale column of Walnut's published pricing table. The API
+    is not reachable on Ignite or Accelerate, and there is no free or trial tier for it.
+  source: https://www.walnut.io/pricing
+
+published_limitations:
+  - Read-only; there are no write endpoints.
+  - Maximum of 1,000 rows per request (contradicted by the quick-start page, which says 10,000).
+  - Offset-based pagination only; no cursor pagination.
+  - API key changes, including revocations, may take up to 5 minutes to take effect.
+  - No self-service key rotation; a lost key requires an account representative.
+  - Demo session data only; demo metadata, playlist sessions and admin analytics are not yet exposed.
+  - Fixed sort order — always newest-first by started_at.
+  - GET /demo-sessions/summary auto-scopes to the last 12 months when no date filter is given.
+
+published_limitations_source: https://help.walnut.io/help/api/customer-data-api

@@ -1,0 +1,198 @@
+name: Walnut Standards Conformance
+description: >-
+  Assertions about which industry and cross-cutting standards the Walnut Customer Data API and
+  platform conform to, each with the evidence it rests on. Walnut's compliance posture is
+  organizational (SOC 2 Type II, GDPR, CCPA) and its identity posture is enterprise-standard
+  (SAML SSO, SCIM). Its API posture is the thin part: no OpenAPI, no AsyncAPI, no RFC 9457
+  problem details, no OAuth, no RFC 9116 security.txt, no RFC 8594 deprecation headers, and no
+  standard rate-limit headers.
+generated: '2026-08-13'
+method: searched
+source: https://help.walnut.io/help/api/customer-data-api
+
+standards:
+  - id: soc2-type-ii
+    name: SOC 2 Type II
+    conforms: true
+    category: compliance
+    evidence:
+      - https://www.walnut.io/llms.txt
+      - https://www.walnut.io/product/enterprise/
+      - https://security.walnut.io/
+    note: >-
+      Claimed by Walnut in its own llms.txt ("Compliance: SOC 2 Type II, GDPR") and on the
+      enterprise product page. The report itself is not public; it would be requested through
+      the trust center at security.walnut.io.
+  - id: gdpr
+    name: GDPR
+    conforms: true
+    category: regulation
+    evidence:
+      - https://www.walnut.io/dpa/
+      - https://www.walnut.io/privacy/
+      - https://www.walnut.io/llms.txt
+    note: DPA and privacy policy published on the Legal Hub.
+  - id: ccpa
+    name: CCPA
+    conforms: true
+    category: regulation
+    evidence:
+      - https://www.walnut.io/ccpa/
+    note: Dedicated CCPA notice published on the Legal Hub.
+  - id: saml2
+    name: SAML 2.0 (SSO)
+    conforms: true
+    category: identity
+    evidence:
+      - https://www.walnut.io/pricing
+      - https://help.walnut.io/help/account/users/sso-and-scim
+    note: >-
+      Application sign-in only, on the Accelerate and Scale plans. Not an API authentication
+      mechanism.
+  - id: scim
+    name: SCIM
+    conforms: true
+    category: identity
+    evidence:
+      - https://www.walnut.io/pricing
+      - https://help.walnut.io/help/account/users/sso-and-scim
+    note: User provisioning for the application, Accelerate and Scale plans.
+  - id: rfc2104-hmac
+    name: HMAC-SHA256 message authentication (RFC 2104)
+    conforms: true
+    category: security
+    evidence:
+      - https://help.walnut.io/help/api/webhooks
+    note: >-
+      Webhook deliveries can be signed with HMAC-SHA256 over the raw body, lowercase hex, in an
+      X-Walnut-Signature header. Optional per webhook; no timestamp or nonce, so replay is not
+      prevented.
+  - id: iso8601
+    name: ISO 8601 date-time
+    conforms: true
+    category: data-format
+    evidence:
+      - https://help.walnut.io/help/api/customer-data-api
+    note: >-
+      All timestamps (started_at, finished_at, lead_form_*_at, session_started, timestamp) are
+      ISO 8601. Date filters use YYYY-MM-DD.
+  - id: iso3166-1-alpha-3
+    name: ISO 3166-1 alpha-3 country codes
+    conforms: true
+    category: data-format
+    evidence:
+      - https://help.walnut.io/help/api/customer-data-api
+    note: geo_country_code is documented as alpha-3, e.g. "USA", "GBR".
+  - id: rfc4122-uuid
+    name: UUID (RFC 4122)
+    conforms: true
+    category: data-format
+    evidence:
+      - https://help.walnut.io/help/api/customer-data-api
+    note: >-
+      Every identifier in the API and both webhook payloads is a UUID — id, demo_id, company_id,
+      session_id, template_id, playlist.id. No prefixed or opaque IDs.
+  - id: mcp
+    name: Model Context Protocol
+    conforms: true
+    category: agent
+    evidence:
+      - https://help.walnut.io/help/api/mcp-server
+    note: >-
+      A first-party MCP server exists and registers three tools, but it is locally run and
+      distributed from a private monorepo. No hosted endpoint. See mcp/walnut-mcp.yml.
+  - id: openapi
+    name: OpenAPI
+    conforms: false
+    category: contract
+    evidence:
+      - https://help.walnut.io/help/api
+    note: >-
+      No OpenAPI or Swagger document is served on any Walnut host (probed 2026-08-13). Walnut's
+      own API overview page states "Full API reference is being auto-generated".
+  - id: asyncapi
+    name: AsyncAPI
+    conforms: false
+    category: contract
+    evidence:
+      - https://help.walnut.io/help/api/webhooks
+    note: >-
+      Two webhook events are fully documented in prose tables, but no AsyncAPI or event-catalog
+      document is published.
+  - id: rfc9457
+    name: RFC 9457 Problem Details for HTTP APIs
+    conforms: false
+    category: errors
+    evidence:
+      - https://help.walnut.io/help/api/customer-data-api
+    note: >-
+      Errors are a flat {"error": "..."} object with no type URI, title/detail split, instance,
+      or machine-readable code. application/problem+json is not used.
+  - id: oauth2
+    name: OAuth 2.0
+    conforms: false
+    category: authentication
+    evidence:
+      - https://help.walnut.io/help/api/customer-data-api
+    note: >-
+      Static x-api-key header only. No authorization server, no token endpoint, no scopes, and
+      no /.well-known/oauth-authorization-server on any host.
+  - id: oidc
+    name: OpenID Connect
+    conforms: false
+    category: authentication
+    evidence:
+      - well-known/walnut-well-known.yml
+    note: No /.well-known/openid-configuration document on any Walnut host.
+  - id: rfc9116-security-txt
+    name: RFC 9116 security.txt
+    conforms: false
+    category: security
+    evidence:
+      - well-known/walnut-well-known.yml
+    note: No /.well-known/security.txt on any of the five Walnut hosts probed 2026-08-13.
+  - id: rfc8594-sunset
+    name: RFC 8594 Sunset header / deprecation signalling
+    conforms: false
+    category: lifecycle
+    evidence:
+      - https://help.walnut.io/help/api/customer-data-api
+    note: No deprecation policy, Sunset header, or Deprecation header is published.
+  - id: rfc9331-ratelimit-headers
+    name: RateLimit header fields for HTTP
+    conforms: false
+    category: rate-limiting
+    evidence:
+      - https://help.walnut.io/help/api/customer-data-api
+    note: >-
+      Limits are stated in prose (50 rps sustained, 100 rps burst) but no RateLimit-*,
+      X-RateLimit-* or Retry-After response header is documented on the 429.
+  - id: idempotency-key
+    name: Idempotency-Key
+    conforms: false
+    category: reliability
+    evidence:
+      - conventions/walnut-conventions.yml
+    note: >-
+      Not applicable in the usual sense — the API is read-only and has no write endpoints — but
+      no idempotency key mechanism is offered.
+  - id: cursor-pagination
+    name: Cursor-based pagination
+    conforms: false
+    category: pagination
+    evidence:
+      - https://help.walnut.io/help/api/customer-data-api
+    note: >-
+      Offset/limit only. Walnut states "There is no cursor-based pagination" and warns that deep
+      offsets may slow down.
+  - id: a2a
+    name: A2A Agent Card
+    conforms: false
+    category: agent
+    evidence:
+      - well-known/walnut-well-known.yml
+    note: >-
+      No /.well-known/agent-card.json or /.well-known/agent.json on any Walnut host.
+
+conforms_count: 10
+does_not_conform_count: 11
