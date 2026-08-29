@@ -1,6 +1,17 @@
 aid: walnut
 name: Walnut
 description: Walnut is an AI-powered interactive demo platform for B2B go-to-market teams, used to capture a live product into an editable demo, personalize it at scale, embed it, and measure how buyers engage with it. Its developer surface is the Walnut Customer Data API — a read-only REST analytics API at customer-api.teamwalnut.com that returns demo-session records with 29 documented fields, plus filtering, offset pagination, field selection and multi-dimensional aggregation. Walnut also ships a first-party Model Context Protocol server that wraps the same three operations for AI assistants, and two signed webhook events for demo and playlist session completion. API and MCP access are exclusive to the enterprise Scale plan, and keys are issued by an account representative rather than self-service.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: paid
   onboarding: sales-gated
