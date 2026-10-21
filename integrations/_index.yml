@@ -109,3 +109,16 @@
   relationship: platform-app
   status: not-a-workflow
   arazzo: null
+- slug: walnut-hubspot-own
+  label: HubSpot (own)
+  partner: hubspot
+  partner_name: HubSpot (own)
+  category: SALES_ENABLEMENT
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://ecosystem.hubspot.com/marketplace/listing/walnut-1168723
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
