@@ -64,33 +64,128 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Walnut is an AI-powered sales demo platform that enables go-to-market teams to create, personalize, and embed interactive product demonstrations. The platform provides tools for sales, marketing, presales, and customer success teams to build demos that drive faster sales cycles and higher conversions.
+Walnut is an AI-powered interactive demo platform for B2B go-to-market teams, used to capture a live product into an editable demo, personalize it at scale, embed it, and measure how buyers engage with it. Its developer surface is the Walnut Customer Data API — a read-only REST analytics API at customer-api.teamwalnut.com that returns demo-session records with 29 documented fields, plus filtering, offset pagination, field selection and multi-dimensional aggregation. Walnut also ships a first-party Model Context Protocol server that wraps the same three operations for AI assistants, and two signed webhook events for demo and playlist session completion. API and MCP access are exclusive to the enterprise Scale plan, and keys are issued by an account representative rather than self-service.
 
-## Key Features
+**Areas:** Sales Demo · Interactive Demos · Product Demos · Sales Enablement · Demo Analytics · Go-To-Market · AI-Powered · Webhook · MCP · Analytics
 
-- AI-powered demo creation (StoryCaptureAI, InsightsAI, AI Mode)
-- Interactive and personalized product demos
-- Demo engagement tracking and analytics
-- CRM integrations (Salesforce, HubSpot, Marketo, Pardot)
-- Webhooks for real-time demo view events
-- Digital Sales Rooms
-- Demos API and MCP access (Scale/enterprise plan)
+## Walnut on APIs.io
 
-## Links
+Everything profiled for Walnut is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/walnut/](https://apis.io/providers/walnut/)** — or go straight to one of the APIs or properties below.
 
-- **Website:** https://www.walnut.io/
-- **Help Center:** https://help.walnut.io/hc/en-us
-- **Blog:** https://www.walnut.io/blog
-- **Pricing:** https://www.walnut.io/pricing
-- **Status Page:** https://status.walnut.io/
-- **GitHub:** https://github.com/teamwalnut
-- **LinkedIn:** https://www.linkedin.com/company/teamwalnut/
-- **X (Twitter):** https://twitter.com/walnutinc
+### APIs (1)
 
-## API Access
+- [Walnut Customer Data API](https://apis.io/apis/walnut/walnut-api/) — Read-only REST API for Walnut demo analytics. Two data endpoints plus a health check — GET /demo-sessions returns individual demo-session records across 29…
 
-The Walnut Demos API is available exclusively on the Scale (enterprise) plan. Webhooks are available for tracking demo view events across plans.
+### Published properties
 
-## Maintainer
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-Kin Lane (kin@apievangelist.com)
+#### AsyncAPI (1)
+
+Event-driven and webhook contracts.
+
+- [Walnut Webhooks](https://apis.io/asyncapis/walnut/walnut-webhooks/)
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [Walnut MCP Server](https://apis.io/servers/walnut/walnut-mcp-server/)
+
+#### Security (3)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Walnut Authentication](https://apis.io/security/walnut/walnut-authentication/)
+- [Walnut Domain Security](https://apis.io/security/walnut/walnut-domain-security/)
+- [Walnut Trust Center](https://apis.io/security/walnut/walnut-trust-center/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Walnut Plans Pricing](https://apis.io/plans/walnut/walnut-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Walnut Rate Limits](https://apis.io/rate-limits/walnut/walnut-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Walnut Finops](https://apis.io/finops/walnut/walnut-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.walnut.io/)
+- [Documentation](https://help.walnut.io/)
+- [Getting started](https://help.walnut.io/help/api/quick-start)
+- [API reference](https://help.walnut.io/help/api/customer-data-api)
+- [Pricing](https://www.walnut.io/pricing)
+- [Sign up](https://www.walnut.io/get-a-demo/)
+- [Support](https://help.walnut.io/)
+- [Blog](https://www.walnut.io/blog)
+- [Terms of service](https://www.walnut.io/msa/)
+- [Privacy policy](https://www.walnut.io/privacy/)
+- [GitHub](https://github.com/teamwalnut)
+- [Status](https://status.walnut.io/)
+
+## API Evangelist rating
+
+**Kin Score 65.0** — strong · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 71.7 |
+| Contract quality | 50.5 |
+| Contract governance | 18.2 |
+| Operational transparency | 73.7 |
+| Developer ergonomics | 64.3 |
+| Access clarity | 92.1 |
+
+**Agent readiness 29.9** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | documented (partial credit) |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | documented (partial credit) |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | yes |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | na |
+
+**Regulatory alignment 29.4** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/walnut/](https://apis.io/providers/walnut/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Walnut: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/walnut/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
